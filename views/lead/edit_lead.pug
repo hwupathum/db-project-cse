@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  include ../common/head.pug
+  +head("Starter MVP")
+  body
+    header
+      include ../common/navbar.pug
+      +navbar(user)
+    h1= title
+    p Welcome to #{title}
+    form(action="/leads/" + lead.id +"/edit",method="POST")
+      input(name="lead_email", type="email",placeholder="Enter your email address", value=lead.email)
+      button(type="submit") Submit
+  include ../common/footer.pug
+  +footer()
