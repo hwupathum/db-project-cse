@@ -1,0 +1,25 @@
+mixin navbar(user)
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        a.navbar-brand(href='/admin') Admin Logo
+        button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-icon
+
+        .collapse.navbar-collapse(id='navbarSupportedContent')
+            ul.navbar-nav.mr-auto
+                if user
+                    li.nav-item.active
+                        a.nav-link(href='/admin') Home
+                    li.nav-item
+                        a.nav-link(href='/admin/admins') Admins
+                    //- li.nav-item
+                    //-   a.nav-link(href='/parking') Parking
+                    //- li.nav-item
+                    //-   a.nav-link(href='/places') Places
+            ul.navbar-nav.float-right
+                if user
+                    li.nav-item
+                        a.nav-link(href='/admin/logout') Logout
+                    li.nav-item.dropdown
+                        a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Accounts
+                        .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+                            a.dropdown-item(href='#') Settings

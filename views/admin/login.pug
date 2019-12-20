@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Starter MVP")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar()
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h4.text-center Administrator Login
+                            .row
+                                .col-sm-12.col-md-12.col-xs-12
+                                    form(action='/admin/login', method='POST')
+                                        div.formgroup
+                                            label.small.mb-1.mt-3 Email:
+                                            input(required='true', name='email', type='email', value=formData.email).form-control
+                                            label.small.mb-1.mt-3 Password:
+                                            input(required='true', name='password', type='password', value='').form-control
+                                            if (errors && errors.message)
+                                                p.small.text-danger #{errors.message}
+                                            button.mt-3.btn.btn-primary(type='submit') Log in
+    include ../admin_common/footer.pug
+    +footer()
