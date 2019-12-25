@@ -53,72 +53,7 @@ exports.admin_register = function (req, res, next) {
         });
     });
 }
-//
-// exports.show_lead = function(req, res, next) {
-//     const queryString = 'SELECT * FROM email WHERE id = ?';
-//     const id = req.params.lead_id;
-//     req.getConnection((error, conn) => {
-//         conn.query(queryString, [id], (err, rows, fields) => {
-//             if (err) {
-//                 res.json(err);
-//             } else {
-//                 res.render('lead/lead', {
-//                     title: 'Express',
-//                     lead: rows[0],
-//                     user: req.session.user
-//                 });
-//             }
-//         });
-//     });
-// };
-//
-// exports.show_edit_lead = function(req, res, next) {
-//     const queryString = 'SELECT * FROM email WHERE id = ?';
-//     const id = req.params.lead_id;
-//     req.getConnection((error, conn) => {
-//         conn.query(queryString, [id], (err, rows, fields) => {
-//             if (err) {
-//                 res.json(err);
-//             } else {
-//                 res.render('lead/edit_lead', {
-//                     title: 'Express',
-//                     lead: rows[0],
-//                     user: req.session.user
-//                 });
-//             }
-//         });
-//     });
-// };
-//
-// exports.edit_lead = function(req, res, next) {
-//     const queryString = 'UPDATE email SET email = ? WHERE email.id = ?';
-//     const id = req.params.lead_id;
-//     const email = req.body.lead_email;
-//     req.getConnection((error, conn) => {
-//         conn.query(queryString, [email, id], (err, rows, fields) => {
-//             if (err) {
-//                 res.json(err);
-//             } else {
-//                 res.redirect('/leads/' + req.params.lead_id);
-//             }
-//         });
-//     });
-// };
-//
-// exports.delete_lead = function(req, res, next) {
-//     const queryString = 'DELETE FROM email WHERE email.id = ?';
-//     const id = req.params.lead_id;
-//     req.getConnection((error, conn) => {
-//         conn.query(queryString, [id], (err, rows, fields) => {
-//             if (err) {
-//                 res.json(err);
-//             } else {
-//                 res.redirect('/leads');
-//             }
-//         });
-//     });
-// };
-//
+
 exports.delete_admin_json = function (req, res, next) {
     const queryString = 'DELETE FROM admin WHERE admin.id = ?';
     const id = req.params.admin_id;
@@ -132,3 +67,71 @@ exports.delete_admin_json = function (req, res, next) {
         });
     });
 };
+
+// departments
+
+exports.show_departments = function (req, res, next) {
+    const queryString = 'SELECT * FROM department';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/departments', {departments: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_departments = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_department', {formData: {}, errors: {}});
+};
+
+exports.add_departments = function (req, res, next) {
+    var department = req.body.department;
+    var queryString = 'INSERT INTO department(department_id,department) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/departments')
+            }
+        });
+    });
+};
+
+exports.show_edit_departments = function (req, res, next) {
+    var department = req.params.department_id;
+    var queryString = 'SELECT * FROM department WHERE department_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_department', {formData: rows[0], errors: {}})
+            }
+        });
+    });
+};
+
+exports.edit_departments = function (req, res, next) {
+    var department_id = req.params.department_id;
+    var department = req.body.department;
+    var queryString = 'UPDATE department SET department = ? WHERE department_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department,department_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/departments')
+            }
+        });
+    });
+};
+//

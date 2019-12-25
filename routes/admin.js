@@ -16,6 +16,12 @@ router.get('/admins/register', admin_landing.check_authenticated, admin_landing.
 // router.get('/leads/:lead_id', landing.check_authenticated, landing.show_lead);
 router.post('/admins/:admin_id/delete-json', admin_landing.delete_admin_json);
 router.post('/admins/register', admin_landing.check_authenticated, admin_validations.check_validation, admin_landing.admin_register);
+
+router.get('/departments',admin_landing.check_authenticated,admin_landing.show_departments);
+router.get('/departments/add',admin_landing.check_authenticated,admin_landing.show_add_departments);
+router.post('/departments/add',admin_landing.check_authenticated,admin_landing.add_departments);
+router.get('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.show_edit_departments);
+router.post('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.edit_departments);
 // router.get('/leads/:lead_id/edit', landing.check_authenticated, landing.show_edit_lead);
 // router.post('/leads/:lead_id/edit', landing.check_authenticated, landing.edit_lead);
 // router.post('/leads/:lead_id/delete', landing.check_authenticated, landing.delete_lead);

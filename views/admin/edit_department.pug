@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Starter MVP")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar()
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h2.text-center Edit Department
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action='/admin/departments/edit/'+formData.department_id, method='POST')
+                                        div.formgroup
+                                            label.small.mb-1.mt-3 Department Name:
+                                            input(required='true', name='department', type='text', value=formData.department).form-control
+
+                                            if (errors && errors.message)
+                                                p.small.text-danger #{errors.message}
+                                            button.mt-3.btn.btn-primary(type='submit') Save
+    include ../common/footer.pug
+    +footer()

@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        if departments
+            h1 Departments
+            a(href="/admin/departments/add") Add New Department
+            for department in departments
+                p(id=department.department_id)
+                    span #{department.department}
+                    |
+                    a(href="/admin/departments/edit/" + department.department_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
