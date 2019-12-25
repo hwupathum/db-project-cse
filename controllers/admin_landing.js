@@ -264,4 +264,69 @@ exports.edit_paygrades = function (req, res, next) {
         });
     });
 };
+
+exports.show_empstatus = function (req, res, next) {
+    const queryString = 'SELECT * FROM emp_status';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/emp_status', {empstatus: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_empstatus = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_empstatus', {formData: {}, errors: {}});
+};
+
+exports.add_empstatus = function (req, res, next) {
+    var status = req.body.status;
+    var queryString = 'INSERT INTO emp_status(emp_stat_id,status) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [status], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/emp_status')
+            }
+        });
+    });
+};
+
+exports.show_edit_empstatus = function (req, res, next) {
+    var state = req.params.emp_stat_id;
+    var queryString = 'SELECT * FROM emp_status WHERE emp_stat_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [state], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_empstatus', {formData: rows[0], errors: {}})
+            }
+        });
+    });
+};
+
+exports.edit_empstatus = function (req, res, next) {
+    var emp_stat_id = req.params.emp_stat_id;
+    var state = req.body.state;
+    var queryString = 'UPDATE emp_status SET status = ? WHERE emp_stat_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [state,emp_stat_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/emp_status')
+            }
+        });
+    });
+};
 //

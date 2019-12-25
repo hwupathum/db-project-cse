@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        if empstatus
+            h1 Employee Status
+            a(href="/admin/emp_status/add") Add New Employee Status
+            for empstate in empstatus
+                p(id=empstate.emp_stat_id)
+                    span #{empstate.status}
+                    |
+                    a(href="/admin/emp_status/edit/" + empstate.emp_stat_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
