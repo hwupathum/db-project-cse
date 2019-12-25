@@ -38,7 +38,6 @@ router.post('/paygrades/add',admin_landing.check_authenticated,admin_landing.add
 router.get('/paygrades/edit/:paygrade_id',admin_landing.check_authenticated,admin_landing.show_edit_paygrades);
 router.post('/paygrades/edit/:paygrade_id',admin_landing.check_authenticated,admin_landing.edit_paygrades);
 
-
 //MAXLEAVES
 router.get('/emp_status',admin_landing.check_authenticated,admin_landing.show_empstatus);
 router.get('/emp_status/add',admin_landing.check_authenticated,admin_landing.show_add_empstatus);
