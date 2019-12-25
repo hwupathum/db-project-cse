@@ -199,4 +199,69 @@ exports.edit_jobs = function (req, res, next) {
         });
     });
 };
+
+exports.show_paygrades = function (req, res, next) {
+    const queryString = 'SELECT * FROM paygrade';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/paygrades', {paygrades: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_paygrades = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_paygrade', {formData: {}, errors: {}});
+};
+
+exports.add_paygrades = function (req, res, next) {
+    var grade = req.body.grade;
+    var queryString = 'INSERT INTO paygrade(paygrade_id,grade) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [grade], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/paygrades')
+            }
+        });
+    });
+};
+
+exports.show_edit_paygrades = function (req, res, next) {
+    var grade = req.params.paygrade_id;
+    var queryString = 'SELECT * FROM paygrade WHERE paygrade_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [grade], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_paygrade', {formData: rows[0], errors: {}})
+            }
+        });
+    });
+};
+
+exports.edit_paygrades = function (req, res, next) {
+    var paygrade_id = req.params.paygrade_id;
+    var grade = req.body.grade;
+    var queryString = 'UPDATE paygrade SET grade = ? WHERE paygrade_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [grade,paygrade_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/paygrades')
+            }
+        });
+    });
+};
 //

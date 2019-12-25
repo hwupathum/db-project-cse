@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        if paygrades
+            h1 Pay Grades
+            a(href="/admin/paygrades/add") Add New Pay Grade
+            for paygrade in paygrades
+                p(id=paygrade.paygrade_id)
+                    span #{paygrade.grade}
+                    |
+                    a(href="/admin/paygrades/edit/" + paygrade.paygrade_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
