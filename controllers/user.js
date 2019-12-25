@@ -15,8 +15,8 @@ exports.signup = function(req, res, next) {
 
 exports.login = function(req, res, next) {
   var email= req.body.email;
-  var pass= req.body.password;
-  var queryString ='SELECT id, email FROM users WHERE email = ? AND password = md5(?)';
+  var pass = req.body.password;
+    var queryString = 'SELECT id, email FROM admin WHERE email = ? AND password = md5(?)';
   req.getConnection((error, conn) => {
     conn.query(queryString, [email, pass], (err, rows, fields) => {
       if (err) {
