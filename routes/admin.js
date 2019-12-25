@@ -22,6 +22,12 @@ router.get('/departments/add',admin_landing.check_authenticated,admin_landing.sh
 router.post('/departments/add',admin_landing.check_authenticated,admin_landing.add_departments);
 router.get('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.show_edit_departments);
 router.post('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.edit_departments);
+
+router.get('/jobs',admin_landing.check_authenticated,admin_landing.show_jobs);
+router.get('/jobs/add',admin_landing.check_authenticated,admin_landing.show_add_jobs);
+router.post('/jobs/add',admin_landing.check_authenticated,admin_landing.add_jobs);
+router.get('/jobs/edit/:job_id',admin_landing.check_authenticated,admin_landing.show_edit_jobs);
+router.post('/jobs/edit/:job_id',admin_landing.check_authenticated,admin_landing.edit_jobs);
 // router.get('/leads/:lead_id/edit', landing.check_authenticated, landing.show_edit_lead);
 // router.post('/leads/:lead_id/edit', landing.check_authenticated, landing.edit_lead);
 // router.post('/leads/:lead_id/delete', landing.check_authenticated, landing.delete_lead);

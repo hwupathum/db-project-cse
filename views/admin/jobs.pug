@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        if jobs
+            h1 Jobs
+            a(href="/admin/jobs/add") Add New Job
+            for job in jobs
+                p(id=job.job_id)
+                    span #{job.title}
+                    |
+                    a(href="/admin/jobs/edit/" + job.job_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

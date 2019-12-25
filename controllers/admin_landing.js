@@ -134,4 +134,69 @@ exports.edit_departments = function (req, res, next) {
         });
     });
 };
+
+exports.show_jobs = function (req, res, next) {
+    const queryString = 'SELECT * FROM job';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/jobs', {jobs: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_jobs = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_job', {formData: {}, errors: {}});
+};
+
+exports.add_jobs = function (req, res, next) {
+    var title = req.body.title;
+    var queryString = 'INSERT INTO job(job_id,title) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [title], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/jobs')
+            }
+        });
+    });
+};
+
+exports.show_edit_jobs = function (req, res, next) {
+    var job = req.params.job_id;
+    var queryString = 'SELECT * FROM job WHERE job_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [job], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_job', {formData: rows[0], errors: {}})
+            }
+        });
+    });
+};
+
+exports.edit_jobs = function (req, res, next) {
+    var job_id = req.params.job_id;
+    var title = req.body.title;
+    var queryString = 'UPDATE job SET title = ? WHERE job_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [title,job_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/jobs')
+            }
+        });
+    });
+};
 //
