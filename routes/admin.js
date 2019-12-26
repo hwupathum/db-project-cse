@@ -55,6 +55,13 @@ router.post('/max_leaves/add',admin_landing.check_authenticated,admin_landing.ad
 // router.get('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.show_edit_empstatus);
 // router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
 
+// LEAVE TYPES
+router.get('/leave_types',admin_landing.check_authenticated,admin_landing.show_leave_types);
+router.get('/leave_types/add',admin_landing.check_authenticated,admin_landing.show_add_leave_types);
+router.post('/leave_types/add',admin_landing.check_authenticated,admin_landing.add_leave_types);
+router.get('/leave_types/edit/:leave_type_id',admin_landing.check_authenticated,admin_landing.show_edit_leave_types);
+router.post('/leave_types/edit/:leave_type_id',admin_landing.check_authenticated,admin_landing.edit_leave_types);
+
 // router.get('/leads/:lead_id/edit', landing.check_authenticated, landing.show_edit_lead);
 // router.post('/leads/:lead_id/edit', landing.check_authenticated, landing.edit_lead);
 // router.post('/leads/:lead_id/delete', landing.check_authenticated, landing.delete_lead);

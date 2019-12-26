@@ -486,3 +486,70 @@ exports.add_max_leaves = function (req, res, next) {
         });
     });
 };
+
+// leave types ...........................................................
+
+exports.show_leave_types = function (req, res, next) {
+    const queryString = 'SELECT * FROM leave_type';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/leave_types', {leave_types: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_leave_types = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_leave_types', {formData: {}, errors: {}, user: req.session.admin});
+};
+
+exports.add_leave_types = function (req, res, next) {
+    const type = req.body.type;
+    const queryString = 'INSERT INTO leave_type(leave_type_id,type) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [type], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/leave_types')
+            }
+        });
+    });
+};
+
+exports.show_edit_leave_types = function (req, res, next) {
+    const type = req.params.leave_type_id;
+    const queryString = 'SELECT * FROM leave_type WHERE leave_type_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [type], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_leave_types', {formData: rows[0], errors: {}, user: req.session.admin})
+            }
+        });
+    });
+};
+
+exports.edit_leave_types = function (req, res, next) {
+    const leave_type_id = req.params.leave_type_id;
+    const type = req.body.type;
+    const queryString = 'UPDATE leave_type SET type = ? WHERE leave_type_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [type, leave_type_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/leave_types')
+            }
+        });
+    });
+};

@@ -25,7 +25,7 @@ html(lang='en')
                                                 label.small.mb-1.mt-3 Employee Type :
                                                 select(required='true', name='leave_type_id', value=formData.leave_type_id).form-control
                                                     each leave_type in leavetypes
-                                                        option(value=leave_type.leave_type_id) #{leave_type.type}
+                                                        option(value=leave_types.leave_type_id) #{leave_types.type}
                                             .col-sm-6.col-md-6
                                                 label.small.mb-1.mt-3 Count :
                                                 input(required='true', name='count', type='text', value='').form-control

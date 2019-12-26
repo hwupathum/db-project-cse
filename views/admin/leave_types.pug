@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if leave_types
+                        h4.text-center Leave Type
+                        br
+                        a.btn.btn-outline-success(href="/admin/leave_types/add") Add Leave Type
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Leave Type
+                                    th.text-center Action
+                            tbody
+                                for leave_type in leave_types
+                                    tr
+                                        p(id=leave_type.leave_type_id)
+                                            td.span #{leave_type.type}
+                                            |
+                                            td.text-center
+                                                a(href="/admin/leave_types/edit/" + leave_type.leave_type_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
