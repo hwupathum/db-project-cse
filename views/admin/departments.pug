@@ -6,14 +6,27 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(user)
-        if departments
-            h1 Departments
-            a(href="/admin/departments/add") Add New Department
-            for department in departments
-                p(id=department.department_id)
-                    span #{department.department}
-                    |
-                    a(href="/admin/departments/edit/" + department.department_id) Edit
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if departments
+                        h4.text-center Departments
+                        br
+                        a.btn.btn-outline-success(href="/admin/departments/add") Add New Department
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Name
+                                    th.text-center Action
+                            tbody
+                                for department in departments
+                                    tr
+                                        p(id=department.department_id)
+                                            td.span #{department.department}
+                                            |
+                                            td.text-center
+                                                a(href="/admin/departments/edit/" + department.department_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
