@@ -6,15 +6,28 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(user)
-        if admins
-            h1 Admins
-            a(href="/admin/admins/register") Register New Admin
-            for admin in admins
-                p(id=admin.id)
-                    span #{admin.email}
-                    |
-                    if admins.length !== 1 && user.id !== admin.id
-                        button(onclick=`confirm("Are you sure you want to delete this admin?") ? deleteAdmin('${admin.id}') : null`) Delete
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if admins
+                        h4.text-center Admins
+                        br
+                        a.btn.btn-outline-success(href="/admin/admins/register") Register New Admin
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Name
+                                    th.text-center Action
+                            tbody
+                                for admin in admins
+                                    tr
+                                        p(id=admin.id)
+                                            td.span #{admin.email}
+                                            |
+                                            td.text-center
+                                                if admins.length !== 1 && user.id !== admin.id
+                                                    button(onclick=`confirm("Are you sure you want to delete this admin?") ? deleteAdmin('${admin.id}') : null`) Delete
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

@@ -6,14 +6,27 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(user)
-        if jobs
-            h1 Jobs
-            a(href="/admin/jobs/add") Add New Job
-            for job in jobs
-                p(id=job.job_id)
-                    span #{job.title}
-                    |
-                    a(href="/admin/jobs/edit/" + job.job_id) Edit
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if jobs
+                        h4.text-center Jobs
+                        br
+                        a.btn.btn-outline-success(href="/admin/jobs/add") Add New Job
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Name
+                                    th.text-center Action
+                            tbody
+                                for job in jobs
+                                    tr
+                                        p(id=job.job_id)
+                                            td.span #{job.title}
+                                            |
+                                            td.text-center
+                                                a(href="/admin/jobs/edit/" + job.job_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
