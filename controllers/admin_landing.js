@@ -1,3 +1,4 @@
+const uuidv1 = require('uuid/v1');
 // check auth ...................................................................
 
 exports.check_authenticated = function (req, res, next) {
@@ -24,6 +25,7 @@ exports.show_employee = function (req, res, next) {
 };
 
 exports.show_add_employee = function (req, res, next) {
+    const message = req.query.error ? "Email already exists" : null;
     req.getConnection((error, conn) => {
         conn.query('SELECT * FROM department', [], (err, departments, fields) => {
             if (err) {
@@ -46,7 +48,7 @@ exports.show_add_employee = function (req, res, next) {
                                                 } else {
                                                     res.render('admin/add_employee', {
                                                         formData: {},
-                                                        errors: {},
+                                                        errors: {message},
                                                         departments,
                                                         jobs,
                                                         emp_status,
@@ -68,19 +70,39 @@ exports.show_add_employee = function (req, res, next) {
 };
 
 exports.add_employee = function (req, res, next) {
-    res.json(req.body)
-    // var department = req.body.department;
-    // var queryString = 'INSERT INTO department(department_id,department) VALUES (null,?)';
-    // req.getConnection((error, conn) => {
-    //     conn.query(queryString, [department], (err, rows, fields) => {
-    //         let message;
-    //         if (err) {
-    //             res.json(err)
-    //         } else {
-    //             res.redirect('/admin/departments')
-    //         }
-    //     });
-    // });
+    const employee_id = uuidv1();
+    const {
+        NIC, f_name, l_name, email, birth_date, marital_stat, gender, street, city, state, tel_no_mobile,
+        tel_no_home, paygrade_id, emp_stat_id, job_id, department_id, starting_date
+    } = req.body;
+    const params = [employee_id, NIC, f_name, l_name, email, street, city, state, birth_date, tel_no_mobile,
+        tel_no_home, marital_stat, gender, 1, department_id, job_id, paygrade_id, emp_stat_id, starting_date];
+    const queryString = 'SELECT email FROM employee WHERE email = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [email], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                if (rows.length) {
+                    // Email already exists
+                    res.redirect('/employee/add?error=1')
+                } else {
+                    // call procedure to add employee
+                    const procedure = 'CALL add_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    req.getConnection((error, conn) => {
+                        conn.query(procedure, params, (err, rows, fields) => {
+                            if (err) {
+                                res.json(err);
+                            } else {
+                                res.redirect('/admin');
+                            }
+                        });
+                    });
+                }
+            }
+        });
+    });
 };
 
 // admins .....................................................................
@@ -99,18 +121,17 @@ exports.show_admins = function (req, res, next) {
 
 exports.show_admin_register = function (req, res, next) {
     //  response is a HTTP web page
-    console.log(req.session)
     res.render('admin/register', {formData: {}, errors: {}, user: req.session.admin});
 };
 
 exports.admin_register = function (req, res, next) {
-    var email = req.body.email;
-    var pass = req.body.password;
-    var confirmPass = req.body.confirmPassword;
+    const email = req.body.email;
+    const pass = req.body.password;
+    const confirmPass = req.body.confirmPassword;
     if (pass !== confirmPass) {
         res.render('admin/login', {formData: req.body, errors: {message: 'Password and confirm password mismatch'}});
     }
-    var queryString = 'SELECT admin_register(?, ?) AS admin_register';
+    const queryString = 'SELECT admin_register(?, ?) AS admin_register';
     req.getConnection((error, conn) => {
         conn.query(queryString, [email, pass], (err, rows, fields) => {
             let message;
@@ -163,8 +184,8 @@ exports.show_add_departments = function (req, res, next) {
 };
 
 exports.add_departments = function (req, res, next) {
-    var department = req.body.department;
-    var queryString = 'INSERT INTO department(department_id,department) VALUES (null,?)';
+    const department = req.body.department;
+    const queryString = 'INSERT INTO department(department_id,department) VALUES (null,?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [department], (err, rows, fields) => {
             let message;
@@ -178,8 +199,8 @@ exports.add_departments = function (req, res, next) {
 };
 
 exports.show_edit_departments = function (req, res, next) {
-    var department = req.params.department_id;
-    var queryString = 'SELECT * FROM department WHERE department_id = ?';
+    const department = req.params.department_id;
+    const queryString = 'SELECT * FROM department WHERE department_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [department], (err, rows, fields) => {
             let message;
@@ -194,11 +215,11 @@ exports.show_edit_departments = function (req, res, next) {
 };
 
 exports.edit_departments = function (req, res, next) {
-    var department_id = req.params.department_id;
-    var department = req.body.department;
-    var queryString = 'UPDATE department SET department = ? WHERE department_id = ?';
+    const department_id = req.params.department_id;
+    const department = req.body.department;
+    const queryString = 'UPDATE department SET department = ? WHERE department_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [department,department_id], (err, rows, fields) => {
+        conn.query(queryString, [department, department_id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
@@ -229,8 +250,8 @@ exports.show_add_jobs = function (req, res, next) {
 };
 
 exports.add_jobs = function (req, res, next) {
-    var title = req.body.title;
-    var queryString = 'INSERT INTO job(job_id,title) VALUES (null,?)';
+    const title = req.body.title;
+    const queryString = 'INSERT INTO job(job_id,title) VALUES (null,?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [title], (err, rows, fields) => {
             let message;
@@ -244,8 +265,8 @@ exports.add_jobs = function (req, res, next) {
 };
 
 exports.show_edit_jobs = function (req, res, next) {
-    var job = req.params.job_id;
-    var queryString = 'SELECT * FROM job WHERE job_id = ?';
+    const job = req.params.job_id;
+    const queryString = 'SELECT * FROM job WHERE job_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [job], (err, rows, fields) => {
             let message;
@@ -260,11 +281,11 @@ exports.show_edit_jobs = function (req, res, next) {
 };
 
 exports.edit_jobs = function (req, res, next) {
-    var job_id = req.params.job_id;
-    var title = req.body.title;
-    var queryString = 'UPDATE job SET title = ? WHERE job_id = ?';
+    const job_id = req.params.job_id;
+    const title = req.body.title;
+    const queryString = 'UPDATE job SET title = ? WHERE job_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [title,job_id], (err, rows, fields) => {
+        conn.query(queryString, [title, job_id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
@@ -295,8 +316,8 @@ exports.show_add_paygrades = function (req, res, next) {
 };
 
 exports.add_paygrades = function (req, res, next) {
-    var grade = req.body.grade;
-    var queryString = 'INSERT INTO paygrade(paygrade_id,grade) VALUES (null,?)';
+    const grade = req.body.grade;
+    const queryString = 'INSERT INTO paygrade(paygrade_id,grade) VALUES (null,?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [grade], (err, rows, fields) => {
             let message;
@@ -310,8 +331,8 @@ exports.add_paygrades = function (req, res, next) {
 };
 
 exports.show_edit_paygrades = function (req, res, next) {
-    var grade = req.params.paygrade_id;
-    var queryString = 'SELECT * FROM paygrade WHERE paygrade_id = ?';
+    const grade = req.params.paygrade_id;
+    const queryString = 'SELECT * FROM paygrade WHERE paygrade_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [grade], (err, rows, fields) => {
             let message;
@@ -326,11 +347,11 @@ exports.show_edit_paygrades = function (req, res, next) {
 };
 
 exports.edit_paygrades = function (req, res, next) {
-    var paygrade_id = req.params.paygrade_id;
-    var grade = req.body.grade;
-    var queryString = 'UPDATE paygrade SET grade = ? WHERE paygrade_id = ?';
+    const paygrade_id = req.params.paygrade_id;
+    const grade = req.body.grade;
+    const queryString = 'UPDATE paygrade SET grade = ? WHERE paygrade_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [grade,paygrade_id], (err, rows, fields) => {
+        conn.query(queryString, [grade, paygrade_id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
@@ -361,8 +382,8 @@ exports.show_add_empstatus = function (req, res, next) {
 };
 
 exports.add_empstatus = function (req, res, next) {
-    var status = req.body.status;
-    var queryString = 'INSERT INTO emp_status(emp_stat_id,status) VALUES (null,?)';
+    const status = req.body.status;
+    const queryString = 'INSERT INTO emp_status(emp_stat_id,status) VALUES (null,?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [status], (err, rows, fields) => {
             let message;
@@ -376,8 +397,8 @@ exports.add_empstatus = function (req, res, next) {
 };
 
 exports.show_edit_empstatus = function (req, res, next) {
-    var state = req.params.emp_stat_id;
-    var queryString = 'SELECT * FROM emp_status WHERE emp_stat_id = ?';
+    const state = req.params.emp_stat_id;
+    const queryString = 'SELECT * FROM emp_status WHERE emp_stat_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [state], (err, rows, fields) => {
             let message;
@@ -392,11 +413,11 @@ exports.show_edit_empstatus = function (req, res, next) {
 };
 
 exports.edit_empstatus = function (req, res, next) {
-    var emp_stat_id = req.params.emp_stat_id;
-    var state = req.body.state;
-    var queryString = 'UPDATE emp_status SET status = ? WHERE emp_stat_id = ?';
+    const emp_stat_id = req.params.emp_stat_id;
+    const state = req.body.state;
+    const queryString = 'UPDATE emp_status SET status = ? WHERE emp_stat_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [state,emp_stat_id], (err, rows, fields) => {
+        conn.query(queryString, [state, emp_stat_id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
