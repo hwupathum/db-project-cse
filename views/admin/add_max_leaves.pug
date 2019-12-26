@@ -1,0 +1,37 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h2.text-center Add Maximum Leaves
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action='/admin/max_leaves/add', method='POST')
+                                        div.formgroup.row
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Pay Grade :
+                                                select(required='true', name='paygrade_id', value=formData.paygrade_id).form-control
+                                                    each paygrade in paygrades
+                                                        option(value=paygrade.paygrade_id) #{paygrade.grade}
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Employee Type :
+                                                select(required='true', name='leave_type_id', value=formData.leave_type_id).form-control
+                                                    each leave_type in leavetypes
+                                                        option(value=leave_type.leave_type_id) #{leave_type.type}
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Count :
+                                                input(required='true', name='count', type='text', value='').form-control
+                                            .col-sm-12.col-md-12
+                                                if (errors && errors.message)
+                                                    p.small.text-danger #{errors.message}
+                                                button.mt-3.btn.btn-success(type='submit') Add
+    include ../admin_common/footer.pug
+    +footer()

@@ -1,0 +1,36 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if max_leaves
+                        h4.text-center Maximum Leaves
+                        br
+                        a.btn.btn-outline-success(href="/admin/max_leaves/add") Add Maximum Leaves
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th PayGrade
+                                    th LeaveType
+                                    th.text-center Count
+                            tbody
+                                for leave in max_leaves
+                                    tr
+                                        //p(id=job.job_id)
+                                        //    td.span #{job.title}
+                                        //    |
+                                        //    td.text-center
+                                                a(href="/admin/jobs/edit/" + job.job_id) Edit
+                                        td.span #{leave.grade}
+                                        td.span #{leave.type}
+                                        td.text-center.span #{leave.count}
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
