@@ -6,7 +6,7 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(user)
-        .container
+        
             br
             .row
                 .col-sm-12.offset-md-1.col-md-10
@@ -21,7 +21,7 @@ html(lang='en')
                                     th Email
                                     th Title
                                     th Department
-                                    th Actions
+                                    th.text-center Actions
                             tbody
                                 for employer in employee
                                     tr
@@ -32,9 +32,9 @@ html(lang='en')
                                             td.span #{employer.department}
                                             td.text-center
                                                 //if admins.length !== 1 && user.id !== admin.id
-                                                a.btn.btn-outline-success(href="/") Personal Details
-                                                a.btn.btn-outline-success(href="/") Work Details
-                                                button.btn.btn-outline-success() Allow/ Disable Access
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/") Personal Details
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/") Work Details
+                                                button.btn.btn-outline-success.btn-sm() Allow/ Disable Access
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
