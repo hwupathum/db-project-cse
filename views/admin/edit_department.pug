@@ -1,11 +1,11 @@
 doctype html
 html(lang='en')
-    include ../common/head.pug
+    include ../admin_common/head.pug
     +head("Starter MVP")
     body
         header
-            include ../common/navbar.pug
-            +navbar()
+            include ../admin_common/navbar.pug
+            +navbar(user)
             .container
                 .row
                     .col-sm-12.offset-md-2.col-md-8
@@ -14,7 +14,7 @@ html(lang='en')
                             h2.text-center Edit Department
                             .row
                                 .col-sm-12.col-md-12
-                                    form(action='/admin/departments/edit/'+formData.department_id, method='POST')
+                                    form(action='/admin/departments/edit/' + formData.department_id, method='POST')
                                         div.formgroup
                                             label.small.mb-1.mt-3 Department Name:
                                             input(required='true', name='department', type='text', value=formData.department).form-control
@@ -22,5 +22,5 @@ html(lang='en')
                                             if (errors && errors.message)
                                                 p.small.text-danger #{errors.message}
                                             button.mt-3.btn.btn-success(type='submit') Save
-    include ../common/footer.pug
+    include ../admin_common/footer.pug
     +footer()

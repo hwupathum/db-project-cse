@@ -39,7 +39,8 @@ exports.show_admins = function (req, res, next) {
 
 exports.show_admin_register = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/register', {formData: {}, errors: {}});
+    console.log(req.session)
+    res.render('admin/register', {formData: {}, errors: {}, user: req.session.admin});
 };
 
 exports.admin_register = function (req, res, next) {
@@ -58,7 +59,7 @@ exports.admin_register = function (req, res, next) {
             } else {
                 if (rows[0].admin_register === 0) {
                     message = 'Email already exists';
-                    res.render('admin/register', {formData: {}, errors: {message}});
+                    res.render('admin/register', {formData: {}, errors: {message}, user: req.session.admin});
                 } else {
                     res.redirect('/admin/admins');
                 }
@@ -126,7 +127,7 @@ exports.show_edit_departments = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_department', {formData: rows[0], errors: {}})
+                res.render('admin/edit_department', {formData: rows[0], errors: {}, user: req.session.admin})
             }
         });
     });
@@ -164,7 +165,7 @@ exports.show_jobs = function (req, res, next) {
 
 exports.show_add_jobs = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/add_job', {formData: {}, errors: {}});
+    res.render('admin/add_job', {formData: {}, errors: {}, user: req.session.admin});
 };
 
 exports.add_jobs = function (req, res, next) {
@@ -192,7 +193,7 @@ exports.show_edit_jobs = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_job', {formData: rows[0], errors: {}})
+                res.render('admin/edit_job', {formData: rows[0], errors: {}, user: req.session.admin})
             }
         });
     });
@@ -258,7 +259,7 @@ exports.show_edit_paygrades = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_paygrade', {formData: rows[0], errors: {}})
+                res.render('admin/edit_paygrade', {formData: rows[0], errors: {}, user: req.session.admin})
             }
         });
     });
@@ -296,7 +297,7 @@ exports.show_empstatus = function (req, res, next) {
 
 exports.show_add_empstatus = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/add_empstatus', {formData: {}, errors: {}});
+    res.render('admin/add_empstatus', {formData: {}, errors: {}, user: req.session.admin});
 };
 
 exports.add_empstatus = function (req, res, next) {
@@ -324,7 +325,7 @@ exports.show_edit_empstatus = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_empstatus', {formData: rows[0], errors: {}})
+                res.render('admin/edit_empstatus', {formData: rows[0], errors: {}, user: req.session.admin})
             }
         });
     });
