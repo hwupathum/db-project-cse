@@ -9,7 +9,7 @@ html(lang='en')
         .container
             br
             .row
-                .col-sm-12.offset-md-2.col-md-8
+                .col-sm-12.offset-md-1.col-md-10
                     if employee
                         h4.text-center Employee
                         br
@@ -19,14 +19,22 @@ html(lang='en')
                                 tr
                                     th Name
                                     th Email
+                                    th Title
+                                    th Department
+                                    th Actions
                             tbody
                                 for employer in employee
                                     tr
                                         p(id=employer.employee_id)
                                             td.span #{employer.f_name + " " + employer.l_name}
-                                            |
                                             td.span #{employer.email}
-                                            //a(href="/admin/departments/edit/" + department.department_id) Edit
+                                            td.span #{employer.title}
+                                            td.span #{employer.department}
+                                            td.text-center
+                                                //if admins.length !== 1 && user.id !== admin.id
+                                                a.btn.btn-outline-success(href="/") Personal Details
+                                                a.btn.btn-outline-success(href="/") Work Details
+                                                button.btn.btn-outline-success() Allow/ Disable Access
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

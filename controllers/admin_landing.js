@@ -12,7 +12,8 @@ exports.check_authenticated = function (req, res, next) {
 // employees .....................................................................
 
 exports.show_employee = function (req, res, next) {
-    const queryString = 'SELECT * FROM employee';
+    const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name, email FROM employee) AS t1 ' +
+        'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works) AS t2 NATURAL JOIN department NATURAL JOIN job';
     req.getConnection((error, conn) => {
         conn.query(queryString, [], (err, rows, fields) => {
             if (err) {
