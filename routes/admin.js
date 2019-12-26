@@ -11,7 +11,8 @@ router.get('/logout', admin.logout);
 
 // EMPLOYEES
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
-// router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
+router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
+router.post('/employee/add', admin_landing.check_authenticated, admin_landing.add_employee);
 
 // ADMINS
 router.get('/admins', admin_landing.check_authenticated, admin_landing.show_admins);

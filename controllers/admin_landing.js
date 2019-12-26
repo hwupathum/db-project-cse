@@ -23,6 +23,66 @@ exports.show_employee = function (req, res, next) {
     });
 };
 
+exports.show_add_employee = function (req, res, next) {
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM department', [], (err, departments, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM job', [], (err, jobs, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            req.getConnection((error, conn) => {
+                                conn.query('SELECT * FROM emp_status', [], (err, emp_status, fields) => {
+                                    if (err) {
+                                        res.json(err);
+                                    } else {
+                                        req.getConnection((error, conn) => {
+                                            conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
+                                                if (err) {
+                                                    res.json(err);
+                                                } else {
+                                                    res.render('admin/add_employee', {
+                                                        formData: {},
+                                                        errors: {},
+                                                        departments,
+                                                        jobs,
+                                                        emp_status,
+                                                        paygrades,
+                                                        user: req.session.admin
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
+
+exports.add_employee = function (req, res, next) {
+    res.json(req.body)
+    // var department = req.body.department;
+    // var queryString = 'INSERT INTO department(department_id,department) VALUES (null,?)';
+    // req.getConnection((error, conn) => {
+    //     conn.query(queryString, [department], (err, rows, fields) => {
+    //         let message;
+    //         if (err) {
+    //             res.json(err)
+    //         } else {
+    //             res.redirect('/admin/departments')
+    //         }
+    //     });
+    // });
+};
+
 // admins .....................................................................
 exports.show_admins = function (req, res, next) {
     const queryString = 'SELECT * FROM admin';

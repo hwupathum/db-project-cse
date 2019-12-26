@@ -13,6 +13,7 @@ html(lang='en')
                 p(id=employer.employee_id)
                     span #{employer.f_name}
                     |
+                    span #{employer.email}
                     //a(href="/admin/departments/edit/" + department.department_id) Edit
     include ../admin_common/footer.pug
     +footer()
