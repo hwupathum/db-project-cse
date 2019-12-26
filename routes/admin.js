@@ -41,12 +41,19 @@ router.post('/paygrades/add',admin_landing.check_authenticated,admin_landing.add
 router.get('/paygrades/edit/:paygrade_id',admin_landing.check_authenticated,admin_landing.show_edit_paygrades);
 router.post('/paygrades/edit/:paygrade_id',admin_landing.check_authenticated,admin_landing.edit_paygrades);
 
-// MAXLEAVES
+// EMPLOYEE STATUS
 router.get('/emp_status',admin_landing.check_authenticated,admin_landing.show_empstatus);
 router.get('/emp_status/add',admin_landing.check_authenticated,admin_landing.show_add_empstatus);
 router.post('/emp_status/add',admin_landing.check_authenticated,admin_landing.add_empstatus);
 router.get('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.show_edit_empstatus);
 router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
+
+// MAXIMUM LEAVES
+router.get('/max_leaves',admin_landing.check_authenticated,admin_landing.show_max_leaves);
+router.get('/max_leaves/add',admin_landing.check_authenticated,admin_landing.show_add_max_leaves);
+router.post('/max_leaves/add',admin_landing.check_authenticated,admin_landing.add_max_leaves);
+// router.get('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.show_edit_empstatus);
+// router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
 
 // router.get('/leads/:lead_id/edit', landing.check_authenticated, landing.show_edit_lead);
 // router.post('/leads/:lead_id/edit', landing.check_authenticated, landing.edit_lead);

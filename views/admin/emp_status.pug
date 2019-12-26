@@ -6,14 +6,27 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(user)
-        if empstatus
-            h1 Employee Status
-            a(href="/admin/emp_status/add") Add New Employee Status
-            for empstate in empstatus
-                p(id=empstate.emp_stat_id)
-                    span #{empstate.status}
-                    |
-                    a(href="/admin/emp_status/edit/" + empstate.emp_stat_id) Edit
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if empstatus
+                        h4.text-center Employee Status
+                        br
+                        a.btn.btn-outline-success(href="/admin/emp_status/add") Add New Employee Status
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Name
+                                    th.text-center Action
+                            tbody
+                                for empstate in empstatus
+                                    tr
+                                        p(id=empstate.emp_stat_id)
+                                            td.span #{empstate.status}
+                                            |
+                                            td.text-center
+                                                a(href="/admin/emp_status/edit/" + empstate.emp_stat_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

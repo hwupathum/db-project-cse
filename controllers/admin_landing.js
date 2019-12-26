@@ -427,3 +427,62 @@ exports.edit_empstatus = function (req, res, next) {
         });
     });
 };
+
+// max_leaves ......................................................
+
+exports.show_max_leaves = function (req, res, next) {
+    const queryString = 'SELECT * from max_leaves NATURAL JOIN leave_type NATURAL JOIN paygrade';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                // console.log(rows);
+                res.render('admin/max_leaves', {max_leaves: rows, user: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_max_leaves = function (req, res, next) {
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM leave_type', [], (err, leavetypes, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            res.render('admin/add_max_leaves', {
+                                formData: {},
+                                errors: {},
+                                paygrades,
+                                leavetypes,
+                                user: req.session.admin
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
+
+exports.add_max_leaves = function (req, res, next) {
+    var paygrade_id = req.body.paygrade_id;
+    var leave_type_id = req.body.leave_type_id;
+    var count = req.body.count;
+    var queryString = 'INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES (?,?,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [count,leave_type_id,paygrade_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/max_leaves')
+            }
+        });
+    });
+};
