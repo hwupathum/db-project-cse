@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+        if employee
+            h1 Employee
+            a(href="/admin/employee/add") Add New Employee
+            for employer in employee
+                p(id=employer.employee_id)
+                    span #{employer.f_name}
+                    |
+                    //a(href="/admin/departments/edit/" + department.department_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

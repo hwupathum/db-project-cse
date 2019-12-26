@@ -1,3 +1,5 @@
+// check auth ...................................................................
+
 exports.check_authenticated = function (req, res, next) {
     if (req.session.admin) {
         next()
@@ -6,11 +8,22 @@ exports.check_authenticated = function (req, res, next) {
     }
 };
 
-exports.get_landing = function (req, res, next) {
-    //  response is a HTTP web page
-    res.render('admin/admins', {title: 'Express', user: req.session.admin});
+// employees .....................................................................
+
+exports.show_employee = function (req, res, next) {
+    const queryString = 'SELECT * FROM employee';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/employee', {employee: rows, user: req.session.admin});
+            }
+        });
+    });
 };
 
+// admins .....................................................................
 exports.show_admins = function (req, res, next) {
     const queryString = 'SELECT * FROM admin';
     req.getConnection((error, conn) => {
@@ -68,7 +81,7 @@ exports.delete_admin_json = function (req, res, next) {
     });
 };
 
-// departments
+// departments .....................................................................
 
 exports.show_departments = function (req, res, next) {
     const queryString = 'SELECT * FROM department';
@@ -135,6 +148,7 @@ exports.edit_departments = function (req, res, next) {
     });
 };
 
+// jobs .....................................................................
 exports.show_jobs = function (req, res, next) {
     const queryString = 'SELECT * FROM job';
     req.getConnection((error, conn) => {
@@ -200,6 +214,7 @@ exports.edit_jobs = function (req, res, next) {
     });
 };
 
+// paygrades .....................................................................
 exports.show_paygrades = function (req, res, next) {
     const queryString = 'SELECT * FROM paygrade';
     req.getConnection((error, conn) => {
@@ -265,6 +280,7 @@ exports.edit_paygrades = function (req, res, next) {
     });
 };
 
+// emp stat .....................................................................
 exports.show_empstatus = function (req, res, next) {
     const queryString = 'SELECT * FROM emp_status';
     req.getConnection((error, conn) => {
@@ -329,4 +345,3 @@ exports.edit_empstatus = function (req, res, next) {
         });
     });
 };
-//

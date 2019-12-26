@@ -8,20 +8,22 @@ let admin = require('../controllers/admin');
 router.get('/login', admin.show_login);
 router.post('/login', admin.login);
 router.get('/logout', admin.logout);
-/* GET home page. */
-router.get('/', admin_landing.check_authenticated, admin_landing.get_landing);
-// router.post('/', landing.check_authenticated, landing.submit_lead);
+
+// EMPLOYEES
+router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
+// router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
+
+// ADMINS
 router.get('/admins', admin_landing.check_authenticated, admin_landing.show_admins);
 router.get('/admins/register', admin_landing.check_authenticated, admin_landing.show_admin_register);
-// router.get('/leads/:lead_id', landing.check_authenticated, landing.show_lead);
 router.post('/admins/:admin_id/delete-json', admin_landing.delete_admin_json);
 router.post('/admins/register', admin_landing.check_authenticated, admin_validations.check_validation, admin_landing.admin_register);
 
 // DEPARTMENTS
-router.get('/departments',admin_landing.check_authenticated,admin_landing.show_departments);
-router.get('/departments/add',admin_landing.check_authenticated,admin_landing.show_add_departments);
-router.post('/departments/add',admin_landing.check_authenticated,admin_landing.add_departments);
-router.get('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.show_edit_departments);
+router.get('/departments', admin_landing.check_authenticated, admin_landing.show_departments);
+router.get('/departments/add', admin_landing.check_authenticated, admin_landing.show_add_departments);
+router.post('/departments/add', admin_landing.check_authenticated, admin_landing.add_departments);
+router.get('/departments/edit/:department_id', admin_landing.check_authenticated, admin_landing.show_edit_departments);
 router.post('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.edit_departments);
 
 // JOBS
