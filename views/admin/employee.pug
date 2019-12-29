@@ -32,7 +32,7 @@ html(lang='en')
                                             td.span #{employer.department}
                                             td.text-center
                                                 //if admins.length !== 1 && user.id !== admin.id
-                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/") Personal Details
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/details") Personal Details
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/") Work Details
                                                 button.btn.btn-outline-success.btn-sm() Allow/ Disable Access
     include ../admin_common/footer.pug

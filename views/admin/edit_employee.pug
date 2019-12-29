@@ -1,0 +1,63 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(user)
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h2.text-center Employee Details
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action="/admin/employee/" + formData.employee_id + "/details", method='POST')
+                                        div.formgroup.row
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 NIC Number *
+                                                input(required='true', name='NIC', type='text', value=formData.NIC).form-control
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 First Name *
+                                                input(required='true', name='f_name', type='text', value=formData.f_name).form-control
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Last Name
+                                                input(name='l_name', type='text', value=formData.l_name).form-control
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Email *
+                                                input(required='true', name='email', type='email', value=formData.email).form-control
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Date of Birth *
+                                                input(required='true', name='birth_date', type='date', value="1997-04-27").form-control
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Marital Status *
+                                                select(required='true', name='marital_stat', value=formData.marital_stat).form-control
+                                                    option(value="Single") Single
+                                                    option(value="Married") Married
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Gender *
+                                                select(required='true', name='gender', value=formData.gender).form-control
+                                                    option(value="Male") Male
+                                                    option(value="Female") Female
+                                            .col-sm-12.col-md-12
+                                                label.small.mb-1.mt-3 Address
+                                            .col-sm-4.col-md-4
+                                                input(name='street', type='text', value=formData.street, placeholder='Street').form-control
+                                            .col-sm-4.col-md-4
+                                                input(name='city', type='text', value=formData.city, placeholder='City').form-control
+                                            .col-sm-4.col-md-4
+                                                input(name='state', type='text', value=formData.state, placeholder='State').form-control
+                                            .col-sm-12.col-md-12
+                                                label.small.mb-1.mt-3 Telephone Number
+                                            .col-sm-6.col-md-6
+                                                input(required='true', name='tel_no_mobile', type='text', value=formData.tel_no_mobile, placeholder='Mobile *').form-control
+                                            .col-sm-6.col-md-6
+                                                input(name='tel_no_home', type='text', value=formData.tel_no_home, placeholder='Home').form-control
+                                            .col-sm-12.col-md-12
+                                                if (errors && errors.message)
+                                                    p.small.text-danger #{errors.message}
+                                                button.mt-3.btn.btn-success(type='submit') Save
+    include ../admin_common/footer.pug
+    +footer()

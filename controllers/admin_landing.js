@@ -1,4 +1,5 @@
 const uuidv1 = require('uuid/v1');
+const moment = require('moment');
 // check auth ...................................................................
 
 exports.check_authenticated = function (req, res, next) {
@@ -87,7 +88,7 @@ exports.add_employee = function (req, res, next) {
             } else {
                 if (rows.length) {
                     // Email already exists
-                    res.redirect('/employee/add?error=1')
+                    res.redirect('/admin/employee/add?error=1')
                 } else {
                     // call procedure to add employee
                     const procedure = 'CALL add_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
@@ -101,6 +102,44 @@ exports.add_employee = function (req, res, next) {
                         });
                     });
                 }
+            }
+        });
+    });
+};
+
+exports.show_edit_employee = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    // const message = req.query.error ? "Email already exists" : null;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM employee WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                // res.json(moment(rows[0].birth_date).format("YYYY-MM-DD"))
+                res.render('admin/edit_employee', {
+                    formData: {...rows[0], birth_date: moment(rows[0].birth_date).format("YYYY-MM-DD")},
+                    errors: {},
+                    user: req.session.admin
+                });
+            }
+        });
+    });
+};
+
+exports.edit_employee = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const {
+        NIC, f_name, l_name, email, birth_date, marital_stat, gender, street, city, state, tel_no_mobile, tel_no_home
+    } = req.body;
+    const params = [NIC, f_name, l_name, email, street, city, state, birth_date, tel_no_mobile, tel_no_home, marital_stat, gender, employee_id];
+    const queryString = 'UPDATE employee SET NIC = ?, f_name = ?, l_name = ?, email = ?, street = ?, city = ?, state = ?, birth_date = ? , tel_no_mobile = ?, tel_no_home = ?, marital_stat = ?, gender = ? WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, params, (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/')
             }
         });
     });
@@ -208,7 +247,6 @@ exports.show_edit_departments = function (req, res, next) {
             if (err) {
                 res.json(err)
             } else {
-                console.log(rows)
                 res.render('admin/edit_department', {formData: rows[0], errors: {}, user: req.session.admin})
             }
         });
