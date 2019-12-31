@@ -1,0 +1,83 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Work History")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        .container
+            br
+            .row.profile-header
+                .col-sm-12.offset-md-2.col-md-8
+                    if rows
+                        //img.img(src=require("../../public/images/profile_photo.png"))
+                        h3.text-center #{rows[0].f_name + " " + rows[0].l_name} 
+                        h4.text-center #{rows[0].NIC} 
+                        h4.text-center #{rows[0].title} 
+            br                  
+            .row
+                .col-6
+                    div.card.bg-light.mb-3
+                        h4.card-header Personal
+                        card-body.card-padding
+                            table
+                                tbody   
+                                    tr
+                                        td.profile-col.h6 Birthday : 
+                                        td.p.card-text #{rows[0].birth_date} 
+                                    tr
+                                        td.profile-col.h6 Marital Status : 
+                                        td.p.card-text #{rows[0].marital_stat} 
+                                    tr
+                                        td.profile-col.h6 Gender : 
+                                        td.p.card-text #{rows[0].gender} 
+                .col-6                    
+                    div.card.bg-light.mb-3
+                        h4.card-header Contact 
+                        card-body.card-padding
+                            table
+                                tbody   
+                                    tr
+                                        td.profile-col.h6 Name : 
+                                        td.p.card-text #{"0"+rows[0].tel_no_mobile}
+                                    tr
+                                        td.profile-col.h6 Home : 
+                                        td.p.card-text #{"0"+rows[0].tel_no_home} 
+                                    tr
+                                        td.profile-col.h6 Email :  
+                                        td.p.card-text #{rows[0].email} 
+
+            .row
+                .col-6                    
+                    div.card.bg-light.mb-3
+                        h4.card-header Address
+                        card-body.card-padding
+                            table
+                                tbody   
+                                    tr
+                                        td.profile-col.h6 Street : 
+                                        td.p.card-text #{rows[0].street}
+                                    tr
+                                        td.profile-col.h6 City : 
+                                        td.p.card-text #{rows[0].city} 
+                                    tr
+                                        td.profile-col.h6 State :  
+                                        td.p.card-text #{rows[0].state} 
+                .col-6
+                    div.card.bg-light.mb-3
+                        h4.card-header Work 
+                        card-body.card-padding
+                            table
+                                tbody   
+                                    tr
+                                        td.profile-col.h6 Department : 
+                                        td.p.card-text #{rows[0].department}
+                                    tr
+                                        td.profile-col.h6 Status : 
+                                        td.p.card-text #{rows[0].status} 
+                                    tr
+                                        td.profile-col.h6 Pay Grade :  
+                                        td.p.card-text #{rows[0].grade} 
+    include ../common/footer.pug
+    +footer()

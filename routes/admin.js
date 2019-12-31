@@ -7,7 +7,7 @@ let admin = require('../controllers/admin');
 
 router.get('/login', admin.check_authenticated, admin.show_login);
 router.post('/login', admin.check_authenticated, admin.login);
-router.get('/logout', admin.check_authenticated, admin.logout);
+router.get('/logout', admin.logout);
 
 // EMPLOYEES
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
@@ -76,13 +76,16 @@ router.post('/max_leaves/add',admin_landing.check_authenticated,admin_landing.ad
 // router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
 
 // LEAVE TYPES
-router.get('/leave_types',admin_landing.check_authenticated,admin_landing.show_leave_types);
-router.get('/leave_types/add',admin_landing.check_authenticated,admin_landing.show_add_leave_types);
-router.post('/leave_types/add',admin_landing.check_authenticated,admin_landing.add_leave_types);
-router.get('/leave_types/edit/:leave_type_id',admin_landing.check_authenticated,admin_landing.show_edit_leave_types);
-router.post('/leave_types/edit/:leave_type_id',admin_landing.check_authenticated,admin_landing.edit_leave_types);
+router.get('/leave_types', admin_landing.check_authenticated, admin_landing.show_leave_types);
+router.get('/leave_types/add', admin_landing.check_authenticated, admin_landing.show_add_leave_types);
+router.post('/leave_types/add', admin_landing.check_authenticated, admin_landing.add_leave_types);
+router.get('/leave_types/edit/:leave_type_id', admin_landing.check_authenticated, admin_landing.show_edit_leave_types);
+router.post('/leave_types/edit/:leave_type_id', admin_landing.check_authenticated, admin_landing.edit_leave_types);
 
-// router.get('/leads/:lead_id/edit', landing.check_authenticated, landing.show_edit_lead);
-// router.post('/leads/:lead_id/edit', landing.check_authenticated, landing.edit_lead);
-// router.post('/leads/:lead_id/delete', landing.check_authenticated, landing.delete_lead);
+// CUSTOM ATTRIBUTES
+router.get('/custom_attr', admin_landing.check_authenticated, admin_landing.show_custom_attr);
+router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.show_add_custom_attr);
+router.post('/custom_attr/add', admin_landing.check_authenticated, admin_landing.add_custom_attr);
+router.get('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.show_edit_custom_attr);
+router.post('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.edit_custom_attr);
 module.exports = router;
