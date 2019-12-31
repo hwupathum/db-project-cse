@@ -802,3 +802,50 @@ exports.edit_custom_attr = function (req, res, next) {
         });
     });
 };
+
+// employee dependents .....................................
+
+exports.show_dependents = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM dependants WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('admin/employee_dependents', {
+                    employer: {employee_id},
+                    rows,
+                    admin: req.session.admin
+                });
+            }
+        });
+    });
+};
+
+exports.show_add_dependants = function (req, res, next) {
+    //  response is a HTTP web page
+    const employee_id = req.params.employee_id;
+    res.render('admin/add_dependants', {formData: {},employer: {employee_id}, errors: {}, admin: req.session.admin});
+};
+
+exports.add_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const f_name = req.body.f_name;
+    const l_name = req.body.l_name;
+    const relation = req.body.relation;
+    const tel_no = req.body.tel_no;
+    const birth_date = req.body.birth_date;
+    const gender = req.body.gender;
+    const queryString = 'INSERT INTO dependants (id,employee_id,f_name,l_name,relation,tel_no,birth_date,gender) VALUES (null,?,?,?,?,?,?,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,f_name,l_name,relation,tel_no,birth_date,gender], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/leave_types')
+            }
+        });
+    });
+};

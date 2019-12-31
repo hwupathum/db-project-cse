@@ -14,11 +14,23 @@ router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
 router.get('/employee', admin_landing.check_authenticated, admin_landing.show_employee);
 router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
 router.post('/employee/add', admin_landing.check_authenticated, admin_landing.add_employee);
+
+// EMPLOYEE DETAILS
 router.get('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.show_edit_employee);
 router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.edit_employee);
+
+// EMPLOYEE WORK DETAILS
 router.get('/employee/:employee_id/work-details', admin_landing.check_authenticated, admin_landing.show_work_history);
 router.get('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.show_edit_work_history);
 router.post('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.edit_work_history);
+
+// EMPLOYEE DEPENDANTS
+router.get('/employee/:employee_id/dependants', admin_landing.check_authenticated, admin_landing.show_dependents);
+router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
+router.get('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.show_add_dependants);
+router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
+
+
 router.post('/employee/:employee_id/delete-json', admin_landing.check_authenticated, admin_landing.delete_employee_json);
 
 // ADMINS
