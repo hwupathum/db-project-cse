@@ -232,10 +232,26 @@ exports.edit_work_history = function (req, res, next) {
             if (err) {
                 res.json(err)
             } else {
-                res.json({'a': 2})
+                res.redirect('/admin/employee')
             }
         });
     });
+};
+
+exports.delete_employee_json = function (req, res, next) {
+    res.send({msg: 'Success'});
+    // todo: complete this
+    // const procedure = 'CALL delete_employee(?)';
+    // const id = req.params.admin_id;
+    // req.getConnection((error, conn) => {
+    //     conn.query(procedure, [id], (err, rows, fields) => {
+    //         if (err) {
+    //             res.json(err);
+    //         } else {
+    //             res.send({msg: 'Success'});
+    //         }
+    //     });
+    // });
 };
 
 // admins .....................................................................

@@ -20,14 +20,14 @@ html(lang='en')
                                     th Email Address
                                     th.text-center Action
                             tbody
-                                for admin in admins
-                                    tr
-                                        p(id=admin.id)
-                                            td.span #{admin.email}
+                                for adminRow in admins
+                                    tr(id=adminRow.id)
+                                        p
+                                            td.span #{adminRow.email}
                                             |
                                             td.text-center
-                                                if admins.length !== 1 && user.id !== admin.id
-                                                    button(onclick=`confirm("Are you sure you want to delete this admin?") ? deleteAdmin('${admin.id}') : null`) Delete
+                                                if admins.length !== 1 && adminRow.id !== admin.id
+                                                    button.btn.btn-outline-primary.btn-sm.mr-2(onclick=`confirm("Are you sure you want to delete this admin?") ? deleteAdmin('${adminRow.id}') : null`) Delete
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

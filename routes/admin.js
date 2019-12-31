@@ -5,9 +5,9 @@ let admin_landing = require('../controllers/admin_landing');
 let admin_validations = require('../controllers/admin_validations');
 let admin = require('../controllers/admin');
 
-router.get('/login', admin.show_login);
-router.post('/login', admin.login);
-router.get('/logout', admin.logout);
+router.get('/login', admin.check_authenticated, admin.show_login);
+router.post('/login', admin.check_authenticated, admin.login);
+router.get('/logout', admin.check_authenticated, admin.logout);
 
 // EMPLOYEES
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
@@ -19,6 +19,7 @@ router.post('/employee/:employee_id/details', admin_landing.check_authenticated,
 router.get('/employee/:employee_id/work-details', admin_landing.check_authenticated, admin_landing.show_work_history);
 router.get('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.show_edit_work_history);
 router.post('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.edit_work_history);
+router.post('/employee/:employee_id/delete-json', admin_landing.check_authenticated, admin_landing.delete_employee_json);
 
 // ADMINS
 router.get('/admins', admin_landing.check_authenticated, admin_landing.show_admins);

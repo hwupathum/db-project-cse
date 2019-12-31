@@ -14,3 +14,20 @@ function deleteAdmin(adminId) {
         })
     })
 }
+
+function removeEmployee(employeeId) {
+    $.ajax({
+        url: '/admin/employee/' + employeeId + '/delete-json',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify({employeeId}),
+        type: 'POST',
+        success: ((res) => {
+            console.log("Result: ", res);
+            $("#" + employeeId).remove();
+        }),
+        error: ((error) => {
+            console.log("Error", error);
+        })
+    })
+}

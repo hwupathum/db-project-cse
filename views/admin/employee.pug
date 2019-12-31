@@ -24,8 +24,8 @@ html(lang='en')
                                     th.text-center Actions
                             tbody
                                 for employer in employee
-                                    tr
-                                        p(id=employer.employee_id)
+                                    tr(id=employer.employee_id)
+                                        p
                                             td.span #{employer.f_name + " " + employer.l_name}
                                             td.span #{employer.email}
                                             td.span #{employer.title}
@@ -36,8 +36,7 @@ html(lang='en')
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/work-details") Work Details
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/dependants") Dependants
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/contacts") Emergency Contacts
-                                                button.btn.btn-outline-primary.btn-sm.mr-2() Allow/ Disable Access
-                                                button.btn.btn-outline-primary.btn-sm.mr-2() Leave Company
+                                                button.btn.btn-outline-primary.btn-sm.mr-2(onclick=`confirm("Are you sure you want to remove from company?") ? removeEmployee('${employer.employee_id}') : null`) Leave Company
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

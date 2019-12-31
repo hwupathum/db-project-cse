@@ -10,11 +10,14 @@ mixin navbar(user)
           li.nav-item.active
             a.nav-link(href='/') Home
           li.nav-item
-            a.nav-link(href='/leads') Leads
-          //- li.nav-item
-          //-   a.nav-link(href='/parking') Parking
-          //- li.nav-item
-          //-   a.nav-link(href='/places') Places
+            a.nav-link(href='/work-history') Work History
+          li.nav-item
+            a.nav-link(href='/work-history') Dependants
+          li.nav-item
+            a.nav-link(href='/contacts') Emergency Contacts
+          li.nav-item
+            a.nav-link(href='/leaves') Leaves
+
       ul.navbar-nav.float-right
         if user
           span.navbar-text Hello #{user.email}!

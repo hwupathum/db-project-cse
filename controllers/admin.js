@@ -1,16 +1,14 @@
+exports.check_authenticated = function (req, res, next) {
+    if (!req.session.admin) {
+        next()
+    } else {
+        res.redirect('/admin');
+    }
+};
+
 exports.show_login = function (req, res, next) {
     //  response is a HTTP web page
     res.render('admin/login', {formData: {}, errors: {}});
-}
-
-exports.show_signup = function (req, res, next) {
-    //  response is a HTTP web page
-    res.render('admin/signup', {formData: {}, errors: {}});
-}
-
-exports.signup = function (req, res, next) {
-    //  response is a HTTP web page
-    res.render('landing', {title: 'Express'});
 }
 
 exports.login = function (req, res, next) {
