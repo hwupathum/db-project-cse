@@ -16,6 +16,9 @@ router.get('/employee/add', admin_landing.check_authenticated, admin_landing.sho
 router.post('/employee/add', admin_landing.check_authenticated, admin_landing.add_employee);
 router.get('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.show_edit_employee);
 router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.edit_employee);
+router.get('/employee/:employee_id/work-details', admin_landing.check_authenticated, admin_landing.show_work_history);
+router.get('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.show_edit_work_history);
+router.post('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.edit_work_history);
 
 // ADMINS
 router.get('/admins', admin_landing.check_authenticated, admin_landing.show_admins);

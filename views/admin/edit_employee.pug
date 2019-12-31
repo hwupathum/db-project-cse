@@ -5,7 +5,7 @@ html(lang='en')
     body
         header
             include ../admin_common/navbar.pug
-            +navbar(user)
+            +navbar(admin)
             .container
                 .row
                     .col-sm-12.offset-md-2.col-md-8
@@ -30,7 +30,7 @@ html(lang='en')
                                                 input(required='true', name='email', type='email', value=formData.email).form-control
                                             .col-sm-4.col-md-4
                                                 label.small.mb-1.mt-3 Date of Birth *
-                                                input(required='true', name='birth_date', type='date', value="1997-04-27").form-control
+                                                input(required='true', name='birth_date', type='date', value=formData.birth_date).form-control
                                             .col-sm-4.col-md-4
                                                 label.small.mb-1.mt-3 Marital Status *
                                                 select(required='true', name='marital_stat', value=formData.marital_stat).form-control

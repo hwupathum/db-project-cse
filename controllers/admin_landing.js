@@ -14,13 +14,13 @@ exports.check_authenticated = function (req, res, next) {
 
 exports.show_employee = function (req, res, next) {
     const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name, email FROM employee) AS t1 ' +
-        'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works) AS t2 NATURAL JOIN department NATURAL JOIN job';
+        'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works WHERE end_date IS NULL) AS t2 NATURAL JOIN department NATURAL JOIN job';
     req.getConnection((error, conn) => {
         conn.query(queryString, [], (err, rows, fields) => {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/employee', {employee: rows, user: req.session.admin});
+                res.render('admin/employee', {employee: rows, admin: req.session.admin});
             }
         });
     });
@@ -49,13 +49,13 @@ exports.show_add_employee = function (req, res, next) {
                                                     res.json(err);
                                                 } else {
                                                     res.render('admin/add_employee', {
-                                                        formData: {},
+                                                        formData: {starting_date: moment().format("YYYY-MM-DD")},
                                                         errors: {message},
                                                         departments,
                                                         jobs,
                                                         emp_status,
                                                         paygrades,
-                                                        user: req.session.admin
+                                                        admin: req.session.admin
                                                     });
                                                 }
                                             });
@@ -119,7 +119,7 @@ exports.show_edit_employee = function (req, res, next) {
                 res.render('admin/edit_employee', {
                     formData: {...rows[0], birth_date: moment(rows[0].birth_date).format("YYYY-MM-DD")},
                     errors: {},
-                    user: req.session.admin
+                    admin: req.session.admin
                 });
             }
         });
@@ -145,6 +145,99 @@ exports.edit_employee = function (req, res, next) {
     });
 };
 
+exports.show_work_history = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM works NATURAL JOIN job NATURAL JOIN department NATURAL JOIN paygrade NATURAL JOIN emp_status WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('admin/employee_work_history', {
+                    employer: {employee_id},
+                    rows,
+                    admin: req.session.admin
+                });
+            }
+        });
+    });
+};
+
+exports.show_edit_work_history = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM department', [], (err, departments, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM job', [], (err, jobs, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            req.getConnection((error, conn) => {
+                                conn.query('SELECT * FROM emp_status', [], (err, emp_status, fields) => {
+                                    if (err) {
+                                        res.json(err);
+                                    } else {
+                                        req.getConnection((error, conn) => {
+                                            conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
+                                                if (err) {
+                                                    res.json(err);
+                                                } else {
+                                                    req.getConnection((error, conn) => {
+                                                        conn.query('SELECT * FROM works WHERE employee_id = ? AND end_date IS NULL', [employee_id], (err, rows, fields) => {
+                                                            if (err) {
+                                                                res.json(err);
+                                                            } else {
+                                                                // res.json(rows)
+                                                                res.render('admin/edit_employee_work_history', {
+                                                                    formData: {
+                                                                        ...rows[0],
+                                                                        birth_date: moment().format("YYYY-MM-DD")
+                                                                    },
+                                                                    errors: {},
+                                                                    departments,
+                                                                    jobs,
+                                                                    emp_status,
+                                                                    paygrades,
+                                                                    admin: req.session.admin
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
+
+exports.edit_work_history = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const {
+        paygrade_id, emp_stat_id, job_id, department_id, starting_date
+    } = req.body;
+    const params = [employee_id, department_id, job_id, paygrade_id, emp_stat_id, starting_date];
+    const procedure = 'CALL add_work(?, ?, ?, ?, ?, ?)';
+    req.getConnection((error, conn) => {
+        conn.query(procedure, params, (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.json({'a': 2})
+            }
+        });
+    });
+};
+
 // admins .....................................................................
 exports.show_admins = function (req, res, next) {
     const queryString = 'SELECT * FROM admin';
@@ -153,7 +246,7 @@ exports.show_admins = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/admins', {admins: rows, user: req.session.admin});
+                res.render('admin/admins', {admins: rows, admin: req.session.admin});
             }
         });
     });
@@ -161,7 +254,7 @@ exports.show_admins = function (req, res, next) {
 
 exports.show_admin_register = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/register', {formData: {}, errors: {}, user: req.session.admin});
+    res.render('admin/register', {formData: {}, errors: {}, admin: req.session.admin});
 };
 
 exports.admin_register = function (req, res, next) {
@@ -180,7 +273,7 @@ exports.admin_register = function (req, res, next) {
             } else {
                 if (rows[0].admin_register === 0) {
                     message = 'Email already exists';
-                    res.render('admin/register', {formData: {}, errors: {message}, user: req.session.admin});
+                    res.render('admin/register', {formData: {}, errors: {message}, admin: req.session.admin});
                 } else {
                     res.redirect('/admin/admins');
                 }
@@ -212,7 +305,7 @@ exports.show_departments = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/departments', {departments: rows, user: req.session.admin});
+                res.render('admin/departments', {departments: rows, admin: req.session.admin});
             }
         });
     });
@@ -247,7 +340,7 @@ exports.show_edit_departments = function (req, res, next) {
             if (err) {
                 res.json(err)
             } else {
-                res.render('admin/edit_department', {formData: rows[0], errors: {}, user: req.session.admin})
+                res.render('admin/edit_department', {formData: rows[0], errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -277,7 +370,7 @@ exports.show_jobs = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/jobs', {jobs: rows, user: req.session.admin});
+                res.render('admin/jobs', {jobs: rows, admin: req.session.admin});
             }
         });
     });
@@ -285,7 +378,7 @@ exports.show_jobs = function (req, res, next) {
 
 exports.show_add_jobs = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/add_job', {formData: {}, errors: {}, user: req.session.admin});
+    res.render('admin/add_job', {formData: {}, errors: {}, admin: req.session.admin});
 };
 
 exports.add_jobs = function (req, res, next) {
@@ -313,7 +406,7 @@ exports.show_edit_jobs = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_job', {formData: rows[0], errors: {}, user: req.session.admin})
+                res.render('admin/edit_job', {formData: rows[0], errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -343,7 +436,7 @@ exports.show_paygrades = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/paygrades', {paygrades: rows, user: req.session.admin});
+                res.render('admin/paygrades', {paygrades: rows, admin: req.session.admin});
             }
         });
     });
@@ -379,7 +472,7 @@ exports.show_edit_paygrades = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_paygrade', {formData: rows[0], errors: {}, user: req.session.admin})
+                res.render('admin/edit_paygrade', {formData: rows[0], errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -409,7 +502,7 @@ exports.show_empstatus = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/emp_status', {empstatus: rows, user: req.session.admin});
+                res.render('admin/emp_status', {empstatus: rows, admin: req.session.admin});
             }
         });
     });
@@ -417,7 +510,7 @@ exports.show_empstatus = function (req, res, next) {
 
 exports.show_add_empstatus = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/add_empstatus', {formData: {}, errors: {}, user: req.session.admin});
+    res.render('admin/add_empstatus', {formData: {}, errors: {}, admin: req.session.admin});
 };
 
 exports.add_empstatus = function (req, res, next) {
@@ -445,7 +538,7 @@ exports.show_edit_empstatus = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_empstatus', {formData: rows[0], errors: {}, user: req.session.admin})
+                res.render('admin/edit_empstatus', {formData: rows[0], errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -477,7 +570,7 @@ exports.show_max_leaves = function (req, res, next) {
                 res.json(err);
             } else {
                 // console.log(rows);
-                res.render('admin/max_leaves', {max_leaves: rows, user: req.session.admin});
+                res.render('admin/max_leaves', {max_leaves: rows, admin: req.session.admin});
             }
         });
     });
@@ -499,7 +592,7 @@ exports.show_add_max_leaves = function (req, res, next) {
                                 errors: {},
                                 paygrades,
                                 leavetypes,
-                                user: req.session.admin
+                                admin: req.session.admin
                             });
                         }
                     });
@@ -535,7 +628,7 @@ exports.show_leave_types = function (req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                res.render('admin/leave_types', {leave_types: rows, user: req.session.admin});
+                res.render('admin/leave_types', {leave_types: rows, admin: req.session.admin});
             }
         });
     });
@@ -543,7 +636,7 @@ exports.show_leave_types = function (req, res, next) {
 
 exports.show_add_leave_types = function (req, res, next) {
     //  response is a HTTP web page
-    res.render('admin/add_leave_types', {formData: {}, errors: {}, user: req.session.admin});
+    res.render('admin/add_leave_types', {formData: {}, errors: {}, admin: req.session.admin});
 };
 
 exports.add_leave_types = function (req, res, next) {
@@ -571,7 +664,7 @@ exports.show_edit_leave_types = function (req, res, next) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_leave_types', {formData: rows[0], errors: {}, user: req.session.admin})
+                res.render('admin/edit_leave_types', {formData: rows[0], errors: {}, admin: req.session.admin})
             }
         });
     });

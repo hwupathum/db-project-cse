@@ -1,0 +1,47 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(admin)
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h2.text-center Change Appintment
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action='/admin/employee/' + formData.employee_id + '/work-details/edit', method='POST')
+                                        div.formgroup.row
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Job
+                                                select(required='true', name='job_id', value=formData.job_id).form-control
+                                                    each job in jobs
+                                                        option(value=job.job_id) #{job.title}
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Department
+                                                select(required='true', name='department_id', value=formData.department_id).form-control
+                                                    each department in departments
+                                                        option(value=department.department_id) #{department.department}
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Pay Grade
+                                                select(required='true', name='paygrade_id', value=formData.paygrade_id).form-control
+                                                    each paygrade in paygrades
+                                                        option(value=paygrade.paygrade_id) #{paygrade.grade}
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Employee Status
+                                                select(required='true', name='emp_stat_id', value=formData.emp_stat_id).form-control
+                                                    each emp_stat in emp_status
+                                                        option(value=emp_stat.emp_stat_id) #{emp_stat.status}
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Date of Appointment *
+                                                input(required='true', name='starting_date', type='date', value=formData.birth_date).form-control
+                                            .col-sm-12.col-md-12
+                                                if (errors && errors.message)
+                                                    p.small.text-danger #{errors.message}
+                                                button.mt-3.btn.btn-success(type='submit') Change
+    include ../admin_common/footer.pug
+    +footer()

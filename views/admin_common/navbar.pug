@@ -1,4 +1,4 @@
-mixin navbar(user)
+mixin navbar(admin)
     nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
         a.navbar-brand(href='/admin') Admin Logo
         button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
@@ -6,7 +6,7 @@ mixin navbar(user)
 
         .collapse.navbar-collapse(id='navbarSupportedContent')
             ul.navbar-nav.mr-auto
-                if user
+                if admin
                     li.nav-item.active
                         a.nav-link(href='/admin') Home
                     li.nav-item
@@ -28,7 +28,7 @@ mixin navbar(user)
                     //- li.nav-item
                     //-   a.nav-link(href='/places') Places
             ul.navbar-nav.float-right
-                if user
+                if admin
                     li.nav-item
                         a.nav-link(href='/admin/logout') Logout
                     li.nav-item.dropdown

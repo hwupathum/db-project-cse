@@ -5,8 +5,8 @@ html(lang='en')
     body
         header
             include ../admin_common/navbar.pug
-            +navbar(user)
-        
+            +navbar(admin)
+
             br
             .row
                 .col-sm-12.offset-md-1.col-md-10
@@ -33,7 +33,7 @@ html(lang='en')
                                             td.text-center
                                                 //if admins.length !== 1 && user.id !== admin.id
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/details") Personal Details
-                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/") Work Details
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/work-details") Work Details
                                                 button.btn.btn-outline-success.btn-sm() Allow/ Disable Access
     include ../admin_common/footer.pug
     +footer()
