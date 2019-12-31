@@ -23,7 +23,7 @@ html(lang='en')
                                     th Telephone Number
                                     th Birth Date
                                     th Gender
-                                    th Edit
+                                    th.text-center Edit
                             tbody
                                 for row in rows
                                     tr
@@ -34,8 +34,9 @@ html(lang='en')
                                             td.span #{row.tel_no}
                                             td.span #{row.birth_date}
                                             td.span #{row.gender}
-                                            //td.text-center
-                                            //    a.table-action(href="/admin/departments/edit/" + department.department_id) Edit
+                                            |
+                                            td.text-center
+                                                a.table-action(href="/admin/employee/" + employer.employee_id + "/dependants/edit") Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

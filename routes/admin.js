@@ -29,7 +29,8 @@ router.get('/employee/:employee_id/dependants', admin_landing.check_authenticate
 router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
 router.get('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.show_add_dependants);
 router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
-
+router.get('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
+router.post('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.edit_dependants);
 
 router.post('/employee/:employee_id/delete-json', admin_landing.check_authenticated, admin_landing.delete_employee_json);
 

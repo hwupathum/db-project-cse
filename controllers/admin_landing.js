@@ -743,7 +743,44 @@ exports.add_dependants = function (req, res, next) {
             if (err) {
                 res.json(err)
             } else {
-                res.redirect('/admin/leave_types')
+                res.redirect("/admin/employee/" + employee_id + "/dependants")
+            }
+        });
+    });
+};
+
+exports.show_edit_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const queryString = 'SELECT * FROM dependants WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('admin/edit_dependants', {formData: rows[0],employer: {employee_id}, errors: {}, admin: req.session.admin})
+            }
+        });
+    });
+};
+
+exports.edit_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const f_name = req.body.f_name;
+    const l_name = req.body.l_name;
+    const relation = req.body.relation;
+    const tel_no = req.body.tel_no;
+    const birth_date = req.body.birth_date;
+    const gender = req.body.gender;
+    const queryString = 'UPDATE dependants SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, birth_date = ?, gender = ? WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [f_name,l_name,relation,tel_no,birth_date,gender,employee_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/admin/employee/" + employee_id + "/dependants")
             }
         });
     });
