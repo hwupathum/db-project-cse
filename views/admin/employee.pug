@@ -34,7 +34,10 @@ html(lang='en')
                                                 //if admins.length !== 1 && user.id !== admin.id
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/details") Personal Details
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/work-details") Work Details
-                                                button.btn.btn-outline-success.btn-sm() Allow/ Disable Access
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/dependants") Dependants
+                                                a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/contacts") Emergency Contacts
+                                                button.btn.btn-outline-primary.btn-sm.mr-2() Allow/ Disable Access
+                                                button.btn.btn-outline-primary.btn-sm.mr-2() Leave Company
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
