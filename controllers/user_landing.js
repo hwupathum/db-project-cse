@@ -46,3 +46,21 @@ exports.show_work_history = function (req, res, next) {
         });
     });
 };
+
+exports.show_dependents = function(req, res, next) {
+    const userId = req.session.userId;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM dependants WHERE employee_id = ?', [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('user/dependents', {
+                    employer: {userId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
