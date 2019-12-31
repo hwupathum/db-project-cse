@@ -26,7 +26,7 @@ html(lang='en')
                                             td.span #{empstate.status}
                                             |
                                             td.text-center
-                                                a(href="/admin/emp_status/edit/" + empstate.emp_stat_id) Edit
+                                                a.table-action(href="/admin/emp_status/edit/" + empstate.emp_stat_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

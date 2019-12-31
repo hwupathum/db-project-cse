@@ -26,7 +26,7 @@ html(lang='en')
                                             td.span #{leave_type.type}
                                             |
                                             td.text-center
-                                                a(href="/admin/leave_types/edit/" + leave_type.leave_type_id) Edit
+                                                a.table-action(href="/admin/leave_types/edit/" + leave_type.leave_type_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

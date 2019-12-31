@@ -26,7 +26,7 @@ html(lang='en')
                                             td.span #{job.title}
                                             |
                                             td.text-center
-                                                a(href="/admin/jobs/edit/" + job.job_id) Edit
+                                                a.table-action(href="/admin/jobs/edit/" + job.job_id) Edit
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
