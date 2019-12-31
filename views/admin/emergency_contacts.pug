@@ -1,0 +1,46 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(admin)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if rows
+                        h4.text-center Emergency Contacts
+                        br
+                        a.btn.btn-outline-success(href="/admin/employee/" + employer.employee_id + "/emergency_contacts/add") Add Emergency Contacts
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Full Name
+                                    th Last Name
+                                    th Telephone Number
+                                    th Gender
+                                    th State
+                                    th City
+                                    th Street
+                                    th Realation
+                                    th.text-center Edit
+                            tbody
+                                for row in rows
+                                    tr
+                                        p(id=row.id)
+                                            td.span #{row.f_name}
+                                            td.span #{row.l_name}
+                                            td.span #{row.tel_no}
+                                            td.span #{row.gender}
+                                            td.span #{row.state}
+                                            td.span #{row.city}
+                                            td.span #{row.street}
+                                            td.span #{row.relation}
+                                            |
+                                            td.text-center
+                                                a.table-action(href="/admin/employee/" + employer.employee_id + "/emergency_contacts/edit") Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
