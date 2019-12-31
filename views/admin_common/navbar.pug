@@ -23,15 +23,9 @@ mixin navbar(admin)
                         a.nav-link(href='/admin/leave_types') Leave Types
                     li.nav-item
                         a.nav-link(href='/admin/max_leaves') Maximum Leaves
-                    //- li.nav-item
-                    //-   a.nav-link(href='/parking') Parking
-                    //- li.nav-item
-                    //-   a.nav-link(href='/places') Places
+                    li.nav-item
+                        a.nav-link(href='/admin/custom_attr') Custom Attributes
             ul.navbar-nav.float-right
                 if admin
                     li.nav-item
                         a.nav-link(href='/admin/logout') Logout
-                    li.nav-item.dropdown
-                        a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Accounts
-                        .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-                            a.dropdown-item(href='#') Settings

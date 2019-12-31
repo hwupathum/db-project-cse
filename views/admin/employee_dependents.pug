@@ -1,0 +1,41 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(admin)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if rows
+                        h4.text-center Dependents
+                        br
+                        a.btn.btn-outline-success(href="/admin/employee/" + employer.employee_id + "/dependants/add") Add Dependants
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Full Name
+                                    th Last Name
+                                    th Relation
+                                    th Telephone Number
+                                    th Birth Date
+                                    th Gender
+                                    th Edit
+                            tbody
+                                for row in rows
+                                    tr
+                                        p(id=row.id)
+                                            td.span #{row.f_name}
+                                            td.span #{row.l_name}
+                                            td.span #{row.relation}
+                                            td.span #{row.tel_no}
+                                            td.span #{row.birth_date}
+                                            td.span #{row.gender}
+                                            //td.text-center
+                                            //    a.table-action(href="/admin/departments/edit/" + department.department_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

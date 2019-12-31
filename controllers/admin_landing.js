@@ -467,12 +467,31 @@ exports.add_paygrades = function (req, res, next) {
     const grade = req.body.grade;
     const queryString = 'INSERT INTO paygrade(paygrade_id,grade) VALUES (null,?)';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [grade], (err, rows, fields) => {
-            let message;
+        conn.query(queryString, [grade], (err, result, fields) => {
             if (err) {
                 res.json(err)
             } else {
-                res.redirect('/admin/paygrades')
+                const paygrade_id = result.insertId;
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM leave_type', [], (err, rows, fields) => {
+                        if (err) {
+                            res.json(err)
+                        } else {
+                            const params = rows.map(row => `(${0},${row.leave_type_id},${paygrade_id})`)
+                            const queryString = `INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES ${params.join(',')}`;
+                            // res.json(params)
+                            req.getConnection((error, conn) => {
+                                conn.query(queryString, [], (err, result, fields) => {
+                                    if (err) {
+                                        res.json(err)
+                                    } else {
+                                        res.redirect('/admin/paygrades')
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
             }
         });
     });
@@ -659,12 +678,31 @@ exports.add_leave_types = function (req, res, next) {
     const type = req.body.type;
     const queryString = 'INSERT INTO leave_type(leave_type_id,type) VALUES (null,?)';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [type], (err, rows, fields) => {
-            let message;
+        conn.query(queryString, [type], (err, result, fields) => {
             if (err) {
                 res.json(err)
             } else {
-                res.redirect('/admin/leave_types')
+                const leave_type_id = result.insertId;
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM paygrade', [], (err, rows, fields) => {
+                        if (err) {
+                            res.json(err)
+                        } else {
+                            const params = rows.map(row => `(${0},${leave_type_id},${row.paygrade_id})`)
+                            const queryString = `INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES ${params.join(',')}`;
+                            // res.json(params)
+                            req.getConnection((error, conn) => {
+                                conn.query(queryString, [], (err, result, fields) => {
+                                    if (err) {
+                                        res.json(err)
+                                    } else {
+                                        res.redirect('/admin/leave_types')
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
             }
         });
     });
@@ -692,6 +730,116 @@ exports.edit_leave_types = function (req, res, next) {
     const queryString = 'UPDATE leave_type SET type = ? WHERE leave_type_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [type, leave_type_id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/leave_types')
+            }
+        });
+    });
+};
+
+// custom attr .....................................................................
+exports.show_custom_attr = function (req, res, next) {
+    const queryString = 'SELECT * FROM custom_attributes';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/custom_attr', {custom_attr: rows, admin: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_custom_attr = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_custom_attr', {formData: {}, errors: {}, admin: req.session.admin});
+};
+
+exports.add_custom_attr = function (req, res, next) {
+    const {attribute} = req.body;
+    const queryString = 'INSERT INTO custom_attributes(attr_id,attribute) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attribute], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/custom_attr')
+            }
+        });
+    });
+};
+
+exports.show_edit_custom_attr = function (req, res, next) {
+    const attrId = req.params.attr_id;
+    const queryString = 'SELECT * FROM custom_attributes WHERE attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attrId], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.render('admin/edit_custom_attr', {formData: rows[0], errors: {}, admin: req.session.admin})
+            }
+        });
+    });
+};
+
+exports.edit_custom_attr = function (req, res, next) {
+    const attr_id = req.params.attr_id;
+    const attribute = req.body.attribute;
+    const queryString = 'UPDATE custom_attributes SET attribute = ? WHERE attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attribute, attr_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/emp_status')
+            }
+        });
+    });
+};
+
+// employee dependents .....................................
+
+exports.show_dependents = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM dependants WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('admin/employee_dependents', {
+                    employer: {employee_id},
+                    rows,
+                    admin: req.session.admin
+                });
+            }
+        });
+    });
+};
+
+exports.show_add_dependants = function (req, res, next) {
+    //  response is a HTTP web page
+    const employee_id = req.params.employee_id;
+    res.render('admin/add_dependants', {formData: {},employer: {employee_id}, errors: {}, admin: req.session.admin});
+};
+
+exports.add_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const f_name = req.body.f_name;
+    const l_name = req.body.l_name;
+    const relation = req.body.relation;
+    const tel_no = req.body.tel_no;
+    const birth_date = req.body.birth_date;
+    const gender = req.body.gender;
+    const queryString = 'INSERT INTO dependants (id,employee_id,f_name,l_name,relation,tel_no,birth_date,gender) VALUES (null,?,?,?,?,?,?,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,f_name,l_name,relation,tel_no,birth_date,gender], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
