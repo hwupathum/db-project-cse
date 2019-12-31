@@ -8,7 +8,7 @@ router.get('/login', user.check_authenticated, user.show_login);
 router.get('/signup', user.check_authenticated, user.show_signup);
 router.post('/login', user.check_authenticated, user.login);
 router.post('/signup', user.check_authenticated, user.signup);
-router.get('/logout', user.check_authenticated, user.logout);
+router.get('/logout', user.logout);
 
 //  USER
 router.get('/', user_landing.check_authenticated, user_landing.show_home);

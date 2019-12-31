@@ -7,7 +7,7 @@ let admin = require('../controllers/admin');
 
 router.get('/login', admin.check_authenticated, admin.show_login);
 router.post('/login', admin.check_authenticated, admin.login);
-router.get('/logout', admin.check_authenticated, admin.logout);
+router.get('/logout', admin.logout);
 
 // EMPLOYEES
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);

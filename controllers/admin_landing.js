@@ -467,12 +467,31 @@ exports.add_paygrades = function (req, res, next) {
     const grade = req.body.grade;
     const queryString = 'INSERT INTO paygrade(paygrade_id,grade) VALUES (null,?)';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [grade], (err, rows, fields) => {
-            let message;
+        conn.query(queryString, [grade], (err, result, fields) => {
             if (err) {
                 res.json(err)
             } else {
-                res.redirect('/admin/paygrades')
+                const paygrade_id = result.insertId;
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM leave_type', [], (err, rows, fields) => {
+                        if (err) {
+                            res.json(err)
+                        } else {
+                            const params = rows.map(row => `(${0},${row.leave_type_id},${paygrade_id})`)
+                            const queryString = `INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES ${params.join(',')}`;
+                            // res.json(params)
+                            req.getConnection((error, conn) => {
+                                conn.query(queryString, [], (err, result, fields) => {
+                                    if (err) {
+                                        res.json(err)
+                                    } else {
+                                        res.redirect('/admin/paygrades')
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
             }
         });
     });
@@ -659,12 +678,31 @@ exports.add_leave_types = function (req, res, next) {
     const type = req.body.type;
     const queryString = 'INSERT INTO leave_type(leave_type_id,type) VALUES (null,?)';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [type], (err, rows, fields) => {
-            let message;
+        conn.query(queryString, [type], (err, result, fields) => {
             if (err) {
                 res.json(err)
             } else {
-                res.redirect('/admin/leave_types')
+                const leave_type_id = result.insertId;
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM paygrade', [], (err, rows, fields) => {
+                        if (err) {
+                            res.json(err)
+                        } else {
+                            const params = rows.map(row => `(${0},${leave_type_id},${row.paygrade_id})`)
+                            const queryString = `INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES ${params.join(',')}`;
+                            // res.json(params)
+                            req.getConnection((error, conn) => {
+                                conn.query(queryString, [], (err, result, fields) => {
+                                    if (err) {
+                                        res.json(err)
+                                    } else {
+                                        res.redirect('/admin/leave_types')
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
             }
         });
     });
