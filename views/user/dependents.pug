@@ -6,33 +6,32 @@ html(lang='en')
         header
             include ../common/navbar.pug
             +navbar(user)
-        .container
-            br
-            .row
-                .col-sm-12.offset-md-2.col-md-8
-                    if rows
-                        h4.text-center Dependents
-                        br
-                        table.table.table-hover.table-bordered
-                            thead.table-primary
+        br
+        .row
+            .col-sm-12.offset-md-2.col-md-8
+                if rows
+                    h4.text-center Dependents
+                    br
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Full Name
+                                th Last Name
+                                th Relation
+                                th Telephone Number
+                                th Birth Date
+                                th Gender
+                        tbody
+                            for row in rows
                                 tr
-                                    th Full Name
-                                    th Last Name
-                                    th Relation
-                                    th Telephone Number
-                                    th Birth Date
-                                    th Gender
-                            tbody
-                                for row in rows
-                                    tr
-                                        p(id=row.id)
-                                            td.span #{row.f_name}
-                                            td.span #{row.l_name}
-                                            td.span #{row.relation}
-                                            td.span #{row.tel_no}
-                                            td.span #{row.birth_date}
-                                            td.span #{row.gender}
-                                            //td.text-center
-                                            //    a.table-action(href="/admin/departments/edit/" + department.department_id) Edit
+                                    p(id=row.id)
+                                        td.span #{row.f_name}
+                                        td.span #{row.l_name}
+                                        td.span #{row.relation}
+                                        td.span #{row.tel_no}
+                                        td.span #{row.birth_date}
+                                        td.span #{row.gender}
+                                        //td.text-center
+                                        //    a.table-action(href="/admin/departments/edit/" + department.department_id) Edit
     include ../common/footer.pug
     +footer()

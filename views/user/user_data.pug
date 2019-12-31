@@ -25,7 +25,7 @@ html(lang='en')
                                 tbody   
                                     tr
                                         td.profile-col.h6 Birthday : 
-                                        td.p.card-text #{rows[0].birth_date} 
+                                        td.p.card-text #{rows[0].birth_date.toLocaleDateString()} 
                                     tr
                                         td.profile-col.h6 Marital Status : 
                                         td.p.card-text #{rows[0].marital_stat} 
@@ -47,7 +47,6 @@ html(lang='en')
                                     tr
                                         td.profile-col.h6 Email :  
                                         td.p.card-text #{rows[0].email} 
-
             .row
                 .col-6                    
                     div.card.bg-light.mb-3
