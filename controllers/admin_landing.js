@@ -739,3 +739,66 @@ exports.edit_leave_types = function (req, res, next) {
         });
     });
 };
+
+// custom attr .....................................................................
+exports.show_custom_attr = function (req, res, next) {
+    const queryString = 'SELECT * FROM custom_attributes';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.render('admin/custom_attr', {custom_attr: rows, admin: req.session.admin});
+            }
+        });
+    });
+};
+
+exports.show_add_custom_attr = function (req, res, next) {
+    //  response is a HTTP web page
+    res.render('admin/add_custom_attr', {formData: {}, errors: {}, admin: req.session.admin});
+};
+
+exports.add_custom_attr = function (req, res, next) {
+    const {attribute} = req.body;
+    const queryString = 'INSERT INTO custom_attributes(attr_id,attribute) VALUES (null,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attribute], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/custom_attr')
+            }
+        });
+    });
+};
+
+exports.show_edit_custom_attr = function (req, res, next) {
+    const attrId = req.params.attr_id;
+    const queryString = 'SELECT * FROM custom_attributes WHERE attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attrId], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.render('admin/edit_custom_attr', {formData: rows[0], errors: {}, admin: req.session.admin})
+            }
+        });
+    });
+};
+
+exports.edit_custom_attr = function (req, res, next) {
+    const attr_id = req.params.attr_id;
+    const attribute = req.body.attribute;
+    const queryString = 'UPDATE custom_attributes SET attribute = ? WHERE attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [attribute, attr_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/emp_status')
+            }
+        });
+    });
+};

@@ -1,0 +1,32 @@
+doctype html
+html(lang='en')
+    include ../admin_common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../admin_common/navbar.pug
+            +navbar(admin)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if custom_attr
+                        h4.text-center Custom Attributes
+                        br
+                        a.btn.btn-outline-success(href="/admin/custom_attr/add") Add New Custom Attribute
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Attribute
+                                    th.text-center Action
+                            tbody
+                                for attr in custom_attr
+                                    tr(id=attr.attr_id)
+                                        p
+                                            td.span #{attr.attribute}
+                                            |
+                                            td.text-center
+                                                a.table-action(href="/admin/custom_attr/edit/" + attr.attr_id) Edit
+    include ../admin_common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
