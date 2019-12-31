@@ -46,3 +46,57 @@ exports.show_work_history = function (req, res, next) {
         });
     });
 };
+
+exports.show_dependents = function(req, res, next) {
+    const userId = req.session.userId;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM dependants WHERE employee_id = ?', [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('user/dependents', {
+                    employer: {userId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_contacts = function(req, res, next) {
+    const userId = req.session.userId;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM emergency_contacts WHERE employee_id = ?', [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('user/emergency_concacts', {
+                    employer: {userId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_leaves = function(req, res, next) {
+    const userId = req.session.userId;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM leaves LEFT OUTER JOIN leave_type USING(leave_type_id) WHERE employee_id = ? AND is_approved=1', [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                    res.render('user/leaves', {
+                    employer: {userId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};

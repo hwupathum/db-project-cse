@@ -19,13 +19,13 @@ html(lang='en')
             .row
                 .col-6
                     div.card.bg-light.mb-3
-                        h4.card-header Personal
+                        h5.card-header Personal
                         card-body.card-padding
                             table
                                 tbody   
                                     tr
                                         td.profile-col.h6 Birthday : 
-                                        td.p.card-text #{rows[0].birth_date} 
+                                        td.p.card-text #{rows[0].birth_date.toLocaleDateString()} 
                                     tr
                                         td.profile-col.h6 Marital Status : 
                                         td.p.card-text #{rows[0].marital_stat} 
@@ -34,7 +34,7 @@ html(lang='en')
                                         td.p.card-text #{rows[0].gender} 
                 .col-6                    
                     div.card.bg-light.mb-3
-                        h4.card-header Contact 
+                        h5.card-header Contact 
                         card-body.card-padding
                             table
                                 tbody   
@@ -47,11 +47,10 @@ html(lang='en')
                                     tr
                                         td.profile-col.h6 Email :  
                                         td.p.card-text #{rows[0].email} 
-
             .row
                 .col-6                    
                     div.card.bg-light.mb-3
-                        h4.card-header Address
+                        h5.card-header Address
                         card-body.card-padding
                             table
                                 tbody   
@@ -66,7 +65,7 @@ html(lang='en')
                                         td.p.card-text #{rows[0].state} 
                 .col-6
                     div.card.bg-light.mb-3
-                        h4.card-header Work 
+                        h5.card-header Work 
                         card-body.card-padding
                             table
                                 tbody   
