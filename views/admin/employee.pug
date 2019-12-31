@@ -36,8 +36,10 @@ html(lang='en')
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/work-details") Work Details
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/dependants") Dependants
                                                 a.btn.btn-outline-success.btn-sm.mr-2(href="/admin/employee/" + employer.employee_id + "/contacts") Emergency Contacts
+                                                br
+                                                br
                                                 button.btn.btn-outline-primary.btn-sm.mr-2() Allow/ Disable Access
-                                                button.btn.btn-outline-primary.btn-sm.mr-2() Leave Company
+                                                button.btn.btn-outline-warning.btn-sm.mr-2() Leave Company
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")
