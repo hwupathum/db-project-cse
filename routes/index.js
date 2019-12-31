@@ -12,5 +12,6 @@ router.get('/logout', user.check_authenticated, user.logout);
 
 //  USER
 router.get('/', user_landing.check_authenticated, user_landing.show_home);
+router.get('/work-history', user_landing.check_authenticated, user_landing.show_work_history);
 
 module.exports = router;
