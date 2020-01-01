@@ -1,0 +1,40 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Employee")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+
+            br
+            .row
+                .col-sm-12.offset-md-1.col-md-10
+                    if rows
+                        h4.text-center Approve Leaves
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Name
+                                    th Leave Type
+                                    th Reason
+                                    th From Date
+                                    th To Date
+                                    th.text-center Actions
+                            tbody
+                                for employer in rows
+                                    tr(id=employer.employee_id)
+                                        p
+                                            td.span #{employer.f_name + " " + employer.l_name}
+                                            td.span #{employer.type}
+                                            td.span #{employer.reason}
+                                            td.span #{employer.from_date}
+                                            td.span #{employer.to_date}
+                                            td.text-center
+                                                //if admins.length !== 1 && user.id !== admin.id
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.id + "/approve") Approve
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.id + "/reject") Reject
+
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

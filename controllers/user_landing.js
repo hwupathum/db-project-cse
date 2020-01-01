@@ -470,3 +470,53 @@ exports.edit_has_attr = function (req, res, next) {
         });
     });
 };
+
+
+// aprove leaves ...............
+
+exports.show_approve_leaves = function(req, res, next) {
+    const userId = req.session.userId;
+    const queryString = 'SELECT * FROM leaves NATURAL JOIN supervises NATURAL JOIN employee NATURAL JOIN leave_type WHERE superviser_id = ? AND is_approved = null';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/approve_leaves', {
+                    employee: {userId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.approve_leave = function (req, res, next) {
+    const id = req.params.id;
+    const queryString = 'UPDATE leaves SET is_approved = 1 WHERE id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/approve_leaves")
+            }
+        });
+    });
+};
+
+exports.reject_leave = function (req, res, next) {
+    const id = req.params.id;
+    const queryString = 'UPDATE leaves SET is_approved = 0 WHERE id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/approve_leaves")
+            }
+        });
+    });
+};

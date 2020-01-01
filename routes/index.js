@@ -50,4 +50,9 @@ router.post('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.c
 router.get('/employee/:employee_id/custom-details', user_landing.check_authenticated, user_landing.show_edit_has_attr);
 router.post('/employee/:employee_id/custom-details/:id', user_landing.check_authenticated, user_landing.edit_has_attr);
 
+// APPROVE LEAVES
+router.get('/approve_leaves', user_landing.check_authenticated, user_landing.show_approve_leaves);
+router.get('/employee/:id/approve', user_landing.check_authenticated, user_landing.approve_leave);
+router.get('/employee/:id/reject', user_landing.check_authenticated, user_landing.reject_leave);
+
 module.exports = router;
