@@ -23,8 +23,9 @@ mixin navbar(user)
               a.nav-link(href='/approve_leaves') Approve Leaves
           li.nav-item.dropdown
               a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
-                  .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-                      a.dropdown-item(href='/reports/department/7') Employee by Department
+              .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+                  a.dropdown-item(href='/reports/department/1') Employee by Department
+                  a.dropdown-item(href='/reports/job/1') Employee by Job
       ul.navbar-nav.float-right
         if user
             span.navbar-text #{user.email}
