@@ -11,3 +11,18 @@
   background-color: #2AA198;
   color: aliceblue;
 }
+
+.profile-col {
+  width: 110px;
+}
+
+.card-padding {
+  padding: 10px;
+}
+
+.profile-header {
+  background-color: #2C3E50;
+  color: aliceblue;
+  padding: 20px;
+  border-radius: 10px;
+}

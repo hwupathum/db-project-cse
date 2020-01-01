@@ -1,0 +1,33 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Emergency Contacts")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        br
+        .row
+            .col-sm-12.offset-md-2.col-md-8
+                if rows
+                    h4.text-center Emergency Contacts
+                    br
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Name
+                                th Telephone
+                                th Gender
+                                th Address
+                                th Realation
+                        tbody
+                            for contact in rows
+                                tr
+                                    p(id=contact.id)
+                                        td.span #{contact.f_name + " " + contact.l_name}
+                                        td.span #{contact.tel_no}
+                                        td.span #{contact.gender}
+                                        td.span #{contact.street + ", " + contact.city + ", " + contact.state}
+                                        td.span #{contact.relation}
+    include ../common/footer.pug
+    +footer()
