@@ -881,7 +881,7 @@ exports.edit_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
     const id = req.params.id;
     const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
-    const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ?';
+    const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ? AND id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id,id], (err, rows, fields) => {
             if (err) {
