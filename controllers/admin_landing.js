@@ -239,19 +239,17 @@ exports.edit_work_history = function (req, res, next) {
 };
 
 exports.delete_employee_json = function (req, res, next) {
-    res.send({msg: 'Success'});
-    // todo: complete this
-    // const procedure = 'CALL delete_employee(?)';
-    // const id = req.params.admin_id;
-    // req.getConnection((error, conn) => {
-    //     conn.query(procedure, [id], (err, rows, fields) => {
-    //         if (err) {
-    //             res.json(err);
-    //         } else {
-    //             res.send({msg: 'Success'});
-    //         }
-    //     });
-    // });
+    const employee_id = req.params.employee_id;
+    const queryString = 'UPDATE employee SET is_active = 0 WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.send({msg: 'Success'});
+            }
+        });
+    });
 };
 
 // admins .....................................................................
