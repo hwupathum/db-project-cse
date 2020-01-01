@@ -651,28 +651,57 @@ exports.show_report_dept = function (req, res, next) {
     });
 };
 
-exports.show_report_job = function (req, res, next) {
+exports.show_report_group = function (req, res, next) {
     const userId = req.session.userId;
-    const {job_id} = req.params;
-    const queryString = 'SELECT * FROM employee NATURAL JOIN works NATURAL JOIN job NATURAL JOIN emp_status NATURAL JOIN department WHERE job_id = ?';
+    const {job, department, emp_status, paygrade} = req.query;
+    const queryString = 'SELECT * FROM employee NATURAL JOIN works NATURAL JOIN job NATURAL JOIN emp_status NATURAL JOIN department WHERE job_id = ? AND department_id = ? AND emp_stat_id = ? AND paygrade_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [job_id], (err, rows, fields) => {
+        conn.query(queryString, [job, department, emp_status, paygrade], (err, rows, fields) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log(rows);
-                const deptQuery = 'SELECT * FROM job';
                 req.getConnection((error, conn) => {
-                    conn.query(deptQuery, [], (err, jobs, fields) => {
+                    conn.query('SELECT * FROM department', [], (err, departments, fields) => {
                         if (err) {
                             res.json(err);
                         } else {
-                            res.render('user/job_report', {
-                                employee: {userId},
-                                rows,
-                                jobs,
-                                job_id,
-                                user: req.session.user
+                            req.getConnection((error, conn) => {
+                                conn.query('SELECT * FROM job', [], (err, jobs, fields) => {
+                                    if (err) {
+                                        res.json(err);
+                                    } else {
+                                        req.getConnection((error, conn) => {
+                                            conn.query('SELECT * FROM emp_status', [], (err, emp_stats, fields) => {
+                                                if (err) {
+                                                    res.json(err);
+                                                } else {
+                                                    req.getConnection((error, conn) => {
+                                                        conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
+                                                            if (err) {
+                                                                res.json(err);
+                                                            } else {
+                                                                console.log(departments)
+                                                                res.render('user/group_report', {
+                                                                    employee: {userId},
+                                                                    rows,
+                                                                    jobs,
+                                                                    departments,
+                                                                    paygrades,
+                                                                    emp_stats,
+                                                                    job_id: job,
+                                                                    paygrade_id: paygrade,
+                                                                    emp_status: emp_status,
+                                                                    department_id: department,
+                                                                    user: req.session.user
+                                                                });
+                                                            }
+                                                        });
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
                             });
                         }
                     });
