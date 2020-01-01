@@ -31,3 +31,7 @@ function removeEmployee(employeeId) {
         })
     })
 }
+
+$(".maxLeaveCountTextBox").on("change paste keyup", function () {
+    $(this).css("border-color", "red");
+});

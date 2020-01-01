@@ -13,7 +13,6 @@ html(lang='en')
                     if max_leaves
                         h4.text-center Maximum Leaves
                         br
-                        a.btn.btn-outline-success(href="/admin/max_leaves/add") Add Maximum Leaves
                         table.table.table-hover.table-bordered
                             thead
                                 tr
@@ -22,15 +21,16 @@ html(lang='en')
                                     th.text-center Count
                             tbody
                                 for leave in max_leaves
-                                    tr
-                                        //p(id=job.job_id)
-                                        //    td.span #{job.title}
-                                        //    |
-                                        //    td.text-center
-                                                a(href="/admin/jobs/edit/" + job.job_id) Edit
+                                    tr(id = leave.id)
                                         td.span #{leave.grade}
                                         td.span #{leave.type}
-                                        td.text-center.span #{leave.count}
+                                        td.text-center.span
+                                            form(action='/admin/max_leaves/edit/' + leave.leave_type_id + '/' + leave.paygrade_id, method='POST')
+                                                .row
+                                                    .col-sm-8.col-md-8
+                                                        input(required='true', name='count', type='number', value=leave.count, min=0, max=100, class='maxLeaveCountTextBox').form-control
+                                                    .col-sm-4.col-md-2
+                                                        button.btn.btn-success(type='submit') Save
     include ../admin_common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

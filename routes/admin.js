@@ -75,11 +75,8 @@ router.get('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,adm
 router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
 
 // MAXIMUM LEAVES
-router.get('/max_leaves',admin_landing.check_authenticated,admin_landing.show_max_leaves);
-router.get('/max_leaves/add',admin_landing.check_authenticated,admin_landing.show_add_max_leaves);
-router.post('/max_leaves/add',admin_landing.check_authenticated,admin_landing.add_max_leaves);
-// router.get('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.show_edit_empstatus);
-// router.post('/emp_status/edit/:emp_stat_id',admin_landing.check_authenticated,admin_landing.edit_empstatus);
+router.get('/max_leaves', admin_landing.check_authenticated, admin_landing.show_max_leaves);
+router.post('/max_leaves/edit/:leave_type_id/:paygrade_id', admin_landing.check_authenticated, admin_landing.edit_max_leaves);
 
 // LEAVE TYPES
 router.get('/leave_types', admin_landing.check_authenticated, admin_landing.show_leave_types);

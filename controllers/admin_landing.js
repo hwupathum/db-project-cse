@@ -589,40 +589,12 @@ exports.show_max_leaves = function (req, res, next) {
     });
 };
 
-exports.show_add_max_leaves = function (req, res, next) {
+exports.edit_max_leaves = function (req, res, next) {
+    const {paygrade_id, leave_type_id} = req.params;
+    const count = req.body.count;
+    const queryString = 'UPDATE max_leaves SET count = ? WHERE leave_type_id = ? AND paygrade_id = ?';
     req.getConnection((error, conn) => {
-        conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
-            if (err) {
-                res.json(err);
-            } else {
-                req.getConnection((error, conn) => {
-                    conn.query('SELECT * FROM leave_type', [], (err, leavetypes, fields) => {
-                        if (err) {
-                            res.json(err);
-                        } else {
-                            res.render('admin/add_max_leaves', {
-                                formData: {},
-                                errors: {},
-                                paygrades,
-                                leavetypes,
-                                admin: req.session.admin
-                            });
-                        }
-                    });
-                });
-            }
-        });
-    });
-};
-
-exports.add_max_leaves = function (req, res, next) {
-    var paygrade_id = req.body.paygrade_id;
-    var leave_type_id = req.body.leave_type_id;
-    var count = req.body.count;
-    var queryString = 'INSERT INTO max_leaves(count,leave_type_id,paygrade_id) VALUES (?,?,?)';
-    req.getConnection((error, conn) => {
-        conn.query(queryString, [count,leave_type_id,paygrade_id], (err, rows, fields) => {
-            let message;
+        conn.query(queryString, [count, leave_type_id, paygrade_id], (err, rows, fields) => {
             if (err) {
                 res.json(err)
             } else {
@@ -873,14 +845,7 @@ exports.show_add_emergency_contacts = function (req, res, next) {
 
 exports.add_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
-    const f_name = req.body.f_name;
-    const l_name = req.body.l_name;
-    const relation = req.body.relation;
-    const tel_no = req.body.tel_no;
-    const gender = req.body.gender;
-    const street = req.body.street;
-    const city = req.body.city;
-    const state = req.body.state;
+    const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
     const queryString = 'INSERT INTO emergency_contacts (id,employee_id,f_name,l_name,relation,tel_no,street,city,state,gender) VALUES (null,?,?,?,?,?,?,?,?,?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [employee_id,f_name,l_name,relation,tel_no,street,city,state,gender], (err, rows, fields) => {
@@ -899,7 +864,6 @@ exports.show_edit_emergency_contacts = function (req, res, next) {
     const queryString = 'SELECT * FROM emergency_contacts WHERE employee_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [employee_id], (err, rows, fields) => {
-            let message;
             if (err) {
                 res.json(err)
             } else {
@@ -912,18 +876,10 @@ exports.show_edit_emergency_contacts = function (req, res, next) {
 
 exports.edit_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
-    const f_name = req.body.f_name;
-    const l_name = req.body.l_name;
-    const relation = req.body.relation;
-    const tel_no = req.body.tel_no;
-    const gender = req.body.gender;
-    const street = req.body.street;
-    const city = req.body.city;
-    const state = req.body.state;
+    const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
     const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id], (err, rows, fields) => {
-            let message;
             if (err) {
                 res.json(err)
             } else {
