@@ -1,0 +1,41 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Department Report")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        br
+        .row
+            .col-sm-12.offset-md-2.col-md-8
+                if departments
+                    .form-group
+                        label(for="departmentSelect") Department
+                        select.form-control(id="departmentSelect")
+                            for department in departments
+                                if(department.department_id == department_id)
+                                    option(value = department.department_id selected) #{department.department}
+                                else
+                                    option(value = department.department_id) #{department.department}
+                if rows
+                    h4.text-center Report
+                    br
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Name
+                                th NIC
+                                th Job
+                                th Status
+                        tbody
+                            for row in rows
+                                tr
+                                    p(id=row.id)
+                                        td.span #{row.f_name + " " + row.l_name}
+                                        td.span #{row.NIC}
+                                        td.span #{row.title}
+                                        td.span #{row.status}
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/users.js")
