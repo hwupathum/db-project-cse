@@ -12,6 +12,9 @@ html(lang='en')
                 if rows
                     h4.text-center Leaves
                     br
+                    a.btn.btn-outline-primary(href="/apply_leave") Apply Leave
+                    br
+                    br
                     table.table.table-hover.table-bordered
                         thead.table-primary
                             tr
@@ -25,7 +28,20 @@ html(lang='en')
                                     p(id=leave.id)
                                         td.span #{leave.type}
                                         td.span #{leave.reason}
-                                        td.span #{leave.from_date.toLocaleDateString()}
-                                        td.span #{leave.to_date.LocaleDateString()}
+                                        td.span #{leave.from_date}
+                                        td.span #{leave.to_date}
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Leave Type
+                                th Count
+                                th Maximum
+                        tbody
+                            for leave in countRows
+                                tr
+                                    p(id=leave.employee_id)
+                                        td.span #{leave.type}
+                                        td.span #{leave.count}
+                                        td.span #{leave.max}
     include ../common/footer.pug
     +footer()

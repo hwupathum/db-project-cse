@@ -85,16 +85,26 @@ exports.show_contacts = function(req, res, next) {
 
 exports.show_leaves = function(req, res, next) {
     const userId = req.session.userId;
+    const queryString = 'SELECT * FROM leaves NATURAL JOIN leave_type WHERE employee_id = ?';
     req.getConnection((error, conn) => {
-        conn.query('SELECT * FROM leaves LEFT OUTER JOIN leave_type USING(leave_type_id) WHERE employee_id = ? AND is_approved=1', [userId], (err, rows, fields) => {
+        conn.query(queryString, [userId], (err, rows, fields) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log(rows)
-                res.render('user/leaves', {
-                    employer: {userId},
-                    rows,
-                    user: req.session.user
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM leave_count NATURAL JOIN leave_type WHERE employee_id = ?', [userId], (err, countRows, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            console.log(countRows)
+                            res.render('user/leaves', {
+                                employee: {userId},
+                                countRows,
+                                rows: rows.map(row => ({...row,from_date: moment(row.from_date).format("YYYY-MM-DD"),to_date: moment(row.to_date).format("YYYY-MM-DD")})),
+                                user: req.session.user
+                            });
+                        }
+                    });
                 });
             }
         });
@@ -500,7 +510,7 @@ exports.edit_has_attr = function (req, res, next) {
 
 exports.show_approve_leaves = function(req, res, next) {
     const userId = req.session.userId;
-    const queryString = 'SELECT * FROM leaves NATURAL JOIN supervises NATURAL JOIN employee NATURAL JOIN leave_type WHERE superviser_id = ? AND is_approved = null';
+    const queryString = 'SELECT * FROM leaves NATURAL JOIN supervises NATURAL JOIN employee NATURAL JOIN leave_type WHERE superviser_id = ? AND is_approved is null';
     req.getConnection((error, conn) => {
         conn.query(queryString, [userId], (err, rows, fields) => {
             if (err) {
@@ -509,7 +519,7 @@ exports.show_approve_leaves = function(req, res, next) {
                 console.log(rows)
                 res.render('user/approve_leaves', {
                     employee: {userId},
-                    rows,
+                    rows: rows.map(row => ({...row,from_date: moment(row.from_date).format("YYYY-MM-DD"),to_date: moment(row.to_date).format("YYYY-MM-DD")})),
                     user: req.session.user
                 });
             }
@@ -540,6 +550,57 @@ exports.reject_leave = function (req, res, next) {
                 res.json(err)
             } else {
                 res.redirect("/approve_leaves")
+            }
+        });
+    });
+};
+
+// apply leave .......................
+
+exports.show_apply_leaves = function(req, res, next) {
+    const userId = req.session.userId;
+    const queryString = 'SELECT * FROM leave_type';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [userId], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/apply_leave', {
+                    formData : {},
+                    errors: req.query.error ? 'Leave Limit Exceeded' : null,
+                    employee: {userId},
+                    rows: rows.map(row => ({...row,from_date: moment(row.from_date).format("YYYY-MM-DD"),to_date: moment(row.to_date).format("YYYY-MM-DD")})),
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.apply_leave = function (req, res, next) {
+    const id = req.params.id;
+    const {leave_type_id, reason, from_date, to_date} = req.body;
+    const queryString = 'SELECT add_leave(?,?,?,?,?,?,?) AS add_leave';
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM leave_count WHERE employee_id = ? AND leave_type_id = ?', [req.session.userId,leave_type_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                if(rows[0].max > rows[0].count) {
+                    const queryString = 'INSERT INTO leaves (`id`, `employee_id`,`leave_type_id`, `from_date`, `to_date`, `reason`, `is_approved`) VALUES (null,?,?,?,?,?,null);';
+                    req.getConnection((error, conn) => {
+                        conn.query(queryString, [id,leave_type_id,from_date,to_date,reason], (err, result, fields) => {
+                            if (err) {
+                                res.json(err)
+                            } else {
+                                res.redirect("/leaves")
+                            }
+                        });
+                    });
+                } else {
+                    res.redirect("/apply_leave?error=1")
+                }
             }
         });
     });
