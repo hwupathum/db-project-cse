@@ -30,11 +30,11 @@ html(lang='en')
                                             td.span #{employer.department}
                                             td.text-center
                                                 //if admins.length !== 1 && user.id !== admin.id
-                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/user/employee/" + employer.employee_id + "/details") Personal Details
-                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/user/employee/" + employer.employee_id + "/work-details") Work Details
-                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/user/employee/" + employer.employee_id + "/dependants") Dependants
-                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/user/employee/" + employer.employee_id + "/emergency_contacts") Emergency Contacts
-                                                button.btn.btn-outline-danger.btn-sm.mr-2(onclick=`confirm("Are you sure you want to remove from company?") ? removeEmployee('${employer.employee_id}') : null`) Leave Company
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.employee_id + "/details") Personal Details
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.employee_id + "/work-details") Work Details
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.employee_id + "/dependants") Dependants
+                                                a.btn.btn-outline-primary.btn-sm.mr-2(href="/employee/" + employer.employee_id + "/emergency_contacts") Emergency Contacts
+                                                //button.btn.btn-outline-danger.btn-sm.mr-2(onclick=`confirm("Are you sure you want to remove from company?") ? removeEmployee('${employer.employee_id}') : null`) Leave Company
     include ../common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

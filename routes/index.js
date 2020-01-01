@@ -18,4 +18,16 @@ router.get('/contacts', user_landing.check_authenticated, user_landing.show_cont
 router.get('/leaves', user_landing.check_authenticated, user_landing.show_leaves);
 router.get('/employees', user_landing.check_authenticated, user_landing.show_employees);
 
+// PERSONAL DETAILS
+router.get('/employee/:employee_id/details', user_landing.check_authenticated, user_landing.show_edit_details);
+router.post('/employee/:employee_id/details', user_landing.check_authenticated, user_landing.edit_details);
+// router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
+// router.get('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
+// router.post('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.edit_dependants);
+
+// EMPLOYEE WORK DETAILS
+router.get('/employee/:employee_id/work-details', user_landing.check_authenticated, user_landing.show_user_work_history);
+router.get('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user_landing.show_edit_work_history);
+router.post('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user_landing.edit_work_history);
+
 module.exports = router;

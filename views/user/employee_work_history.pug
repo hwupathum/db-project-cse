@@ -1,0 +1,36 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Admin Portal")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if rows
+                        h4.text-center Work History
+                        br
+                        //a.btn.btn-outline-success(href="/employee/" + employer.employee_id + "/work-details/edit") Change Position
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Appointment Date
+                                    th Title
+                                    th Department
+                                    th Pay Grade
+                                    th Employee Status
+                            tbody
+                                for work in rows
+                                    tr
+                                        p(id=work.id)
+                                            td.span #{work.starting_date.toLocaleDateString()} #{work.end_date ? null : '(Current)'}
+                                            td.span #{work.title}
+                                            td.span #{work.department}
+                                            td.span #{work.grade}
+                                            td.span #{work.status}
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")
