@@ -52,9 +52,17 @@ html(lang='en')
                                             .col-sm-12.col-md-12
                                                 label.small.mb-1.mt-3 Telephone Number
                                             .col-sm-6.col-md-6
-                                                input(required='true', name='tel_no_mobile', type='text', value=formData.tel_no_mobile, placeholder='Mobile *').form-control
+                                                .form-group
+                                                    .input-group.mb-3
+                                                        .input-group-prepend
+                                                            span.input-group-text +94
+                                                        input(required='true', name='tel_no_mobile', type='text', value=formData.tel_no_mobile, placeholder='Mobile *').form-control
                                             .col-sm-6.col-md-6
-                                                input(name='tel_no_home', type='text', value=formData.tel_no_home, placeholder='Home').form-control
+                                                .form-group
+                                                    .input-group.mb-3
+                                                        .input-group-prepend
+                                                            span.input-group-text +94
+                                                        input(name='tel_no_home', type='text', value=formData.tel_no_home, placeholder='Home').form-control
                                             .col-sm-12.col-md-12
                                                 if (errors && errors.message)
                                                     p.small.text-danger #{errors.message}

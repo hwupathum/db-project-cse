@@ -26,7 +26,7 @@ html(lang='en')
                             for leave in rows
                                 tr
                                     p(id=leave.id)
-                                        td.span #{leave.type}
+                                        td.span #{leave.type} #{leave.is_approved === null ? '(Pending)' : leave.is_approved === 1 ? '(Approved)' : '(Rejected)'}
                                         td.span #{leave.reason}
                                         td.span #{leave.from_date}
                                         td.span #{leave.to_date}
