@@ -13,11 +13,11 @@ router.get('/logout', admin.logout);
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
 router.get('/employee', admin_landing.check_authenticated, admin_landing.show_employee);
 router.get('/employee/add', admin_landing.check_authenticated, admin_landing.show_add_employee);
-router.post('/employee/add', admin_landing.check_authenticated, admin_landing.add_employee);
+router.post('/employee/add', admin_landing.check_authenticated, admin_validations.add_employee_validation, admin_landing.add_employee);
 
 // EMPLOYEE DETAILS
 router.get('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.show_edit_employee);
-router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.edit_employee);
+router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_validations.edit_employee_validation, admin_landing.edit_employee);
 
 // EMPLOYEE CUSTOM DETAILS
 router.get('/employee/:employee_id/custom-details', admin_landing.check_authenticated, admin_landing.show_edit_has_attr);
@@ -38,7 +38,7 @@ router.post('/employee/:employee_id/dependants/edit/:id', admin_landing.check_au
 // EMERGENCY CONTACTS
 router.get('/employee/:employee_id/emergency_contacts', admin_landing.check_authenticated, admin_landing.show_emergency_contacts);
 router.get('/employee/:employee_id/emergency_contacts/add', admin_landing.check_authenticated, admin_landing.show_add_emergency_contacts);
-router.post('/employee/:employee_id/emergency_contacts/add', admin_landing.check_authenticated, admin_validations.add_employee_validation, admin_landing.add_emergency_contacts);
+router.post('/employee/:employee_id/emergency_contacts/add', admin_landing.check_authenticated, admin_landing.add_emergency_contacts);
 router.get('/employee/:employee_id/emergency_contacts/edit/:id', admin_landing.check_authenticated, admin_landing.show_edit_emergency_contacts);
 router.post('/employee/:employee_id/emergency_contacts/edit/:id', admin_landing.check_authenticated, admin_landing.edit_emergency_contacts);
 
