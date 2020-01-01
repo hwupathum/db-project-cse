@@ -240,7 +240,7 @@ exports.edit_work_history = function (req, res, next) {
 
 exports.delete_employee_json = function (req, res, next) {
     const employee_id = req.params.employee_id;
-    const queryString = 'UPDATE employee SET is_active = 0 WHERE employee_id = ?';
+    const queryString = 'CALL delete_employee_(?)';
     req.getConnection((error, conn) => {
         conn.query(queryString, [employee_id], (err, rows, fields) => {
             if (err) {
