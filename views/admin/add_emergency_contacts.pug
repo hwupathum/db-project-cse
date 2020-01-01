@@ -27,7 +27,11 @@ html(lang='en')
                                                 input(required='true',name='relation', type='text', value=formData.relation, placeholder='Relation *').form-control
                                             .col-sm-6.col-md-6
                                                 label.small.mb-1.mt-3 Telephone *
-                                                input(required='true', name='tel_no', type='text', value=formData.tel_no, placeholder='Telephone *').form-control
+                                                .form-group
+                                                    .input-group.mb-3
+                                                        .input-group-prepend
+                                                            span.input-group-text +94
+                                                        input(required='true', name='tel_no', type='text', value=formData.tel_no, placeholder='Telephone *').form-control
                                             .col-sm-4.col-md-6
                                                 label.small.mb-1.mt-3 Gender *
                                                 select(required='true', name='gender', value=formData.gender).form-control
@@ -35,13 +39,13 @@ html(lang='en')
                                                     option(value="Female") Female
                                             .col-sm-4.col-md-4
                                                 label.small.mb-1.mt-3 Street *
-                                                input(name='street', type='text', value=formData.street, placeholder='Street').form-control
+                                                input(required='true', name='street', type='text', value=formData.street, placeholder='Street').form-control
                                             .col-sm-4.col-md-4
                                                 label.small.mb-1.mt-3 City *
-                                                input(name='city', type='text', value=formData.city, placeholder='City').form-control
+                                                input(required='true', name='city', type='text', value=formData.city, placeholder='City').form-control
                                             .col-sm-4.col-md-4
                                                 label.small.mb-1.mt-3 State *
-                                                input(name='state', type='text', value=formData.state, placeholder='State').form-control
+                                                input(required='true', name='state', type='text', value=formData.state, placeholder='State').form-control
                                             .col-sm-12.col-md-12
                                                 if (errors && errors.message)
                                                     p.small.text-danger #{errors.message}
