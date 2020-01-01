@@ -7,24 +7,25 @@ mixin navbar(user)
     .collapse.navbar-collapse(id='navbarSupportedContent')
       ul.navbar-nav.mr-auto
         if user
-          li.nav-item.active
-            a.nav-link(href='/') Home
-          li.nav-item
-            a.nav-link(href='/work-history') Work History
-          li.nav-item
-            a.nav-link(href='/dependents') Dependants
-          li.nav-item
-              a.nav-link(href='/contacts') Emergency Contacts
-          li.nav-item
-              a.nav-link(href='/leaves') Leaves
-          li.nav-item
-              a.nav-link(href='/employee') Employees
-          li.nav-item
-              a.nav-link(href='/approve_leaves') Approve Leaves
-          li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
-                  .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-                      a.dropdown-item(href='/reports/department/7') Employee by Department
+            li.nav-item.active
+                a.nav-link(href='/') Home
+            li.nav-item
+                a.nav-link(href='/work-history') Work History
+            li.nav-item
+                a.nav-link(href='/dependents') Dependants
+            li.nav-item
+                a.nav-link(href='/contacts') Emergency Contacts
+            li.nav-item
+                a.nav-link(href='/leaves') Leaves
+            if (user.job_id == 1)
+                li.nav-item
+                    a.nav-link(href='/employee') Employees
+                li.nav-item
+                    a.nav-link(href='/approve_leaves') Approve Leaves
+                li.nav-item.dropdown
+                    a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
+                    .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+                        a.dropdown-item(href='/reports/department/7') Employee by Department
         ul.navbar-nav.float-right
             if user
                 span.navbar-text #{user.email}
