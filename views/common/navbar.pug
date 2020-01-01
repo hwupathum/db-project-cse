@@ -17,15 +17,16 @@ mixin navbar(user)
               a.nav-link(href='/contacts') Emergency Contacts
           li.nav-item
               a.nav-link(href='/leaves') Leaves
-          li.nav-item
-              a.nav-link(href='/employee') Employees
-          li.nav-item
-              a.nav-link(href='/approve_leaves') Approve Leaves
-          li.nav-item.dropdown
-              a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
-              .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-                  a.dropdown-item(href='/reports/department/1') Employee by Department
-                  a.dropdown-item(href='/reports/job/1') Employee by Job
+          if (user.job_id == 1)
+              li.nav-item
+                  a.nav-link(href='/employee') Employees
+              li.nav-item
+                  a.nav-link(href='/approve_leaves') Approve Leaves
+              li.nav-item.dropdown
+                  a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
+                  .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+                      a.dropdown-item(href='/reports/department/1') Employee by Department
+                      a.dropdown-item(href='/reports/job/1') Employee by Job
       ul.navbar-nav.float-right
         if user
             span.navbar-text #{user.email}

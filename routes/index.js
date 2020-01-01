@@ -26,34 +26,34 @@ router.get('/employee/:employee_id/add_supervisor', user_landing.check_authentic
 router.post('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user_landing.add_edit_supervisor);
 
 // PERSONAL DETAILS
-router.get('/employee/:employee_id/details', user_landing.check_authenticated, user_landing.show_edit_details);
-router.post('/employee/:employee_id/details', user_landing.check_authenticated, user_landing.edit_details);
+router.get('/employee/:employee_id/details', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_details);
+router.post('/employee/:employee_id/details', user_landing.check_authenticated, user.allow_hr, user_landing.edit_details);
 // router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
 // router.get('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
 // router.post('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.edit_dependants);
 
 // EMPLOYEE WORK DETAILS
-router.get('/employee/:employee_id/work-details', user_landing.check_authenticated, user_landing.show_user_work_history);
-router.get('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user_landing.show_edit_work_history);
-router.post('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user_landing.edit_work_history);
+router.get('/employee/:employee_id/work-details', user_landing.check_authenticated, user.allow_hr, user_landing.show_user_work_history);
+router.get('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_work_history);
+router.post('/employee/:employee_id/work-details/edit', user_landing.check_authenticated, user.allow_hr, user_landing.edit_work_history);
 
 // EMPLOYEE DEPENDANTS
-router.get('/employee/:employee_id/dependants', user_landing.check_authenticated, user_landing.show_user_dependants);
-router.get('/employee/:employee_id/dependants/add', user_landing.check_authenticated, user_landing.show_add_dependants);
-router.post('/employee/:employee_id/dependants/add', user_landing.check_authenticated, user_landing.add_dependants);
-router.get('/employee/:employee_id/dependants/edit/:id', user_landing.check_authenticated, user_landing.show_edit_dependants);
-router.post('/employee/:employee_id/dependants/edit/:id', user_landing.check_authenticated, user_landing.edit_dependants);
+router.get('/employee/:employee_id/dependants', user_landing.check_authenticated, user.allow_hr, user_landing.show_user_dependants);
+router.get('/employee/:employee_id/dependants/add', user_landing.check_authenticated, user.allow_hr, user_landing.show_add_dependants);
+router.post('/employee/:employee_id/dependants/add', user_landing.check_authenticated, user.allow_hr, user_landing.add_dependants);
+router.get('/employee/:employee_id/dependants/edit/:id', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_dependants);
+router.post('/employee/:employee_id/dependants/edit/:id', user_landing.check_authenticated, user.allow_hr, user_landing.edit_dependants);
 
 // EMERGENCY CONTACTS
-router.get('/employee/:employee_id/emergency_contacts', user_landing.check_authenticated, user_landing.show_emergency_contacts);
-router.get('/employee/:employee_id/emergency_contacts/add', user_landing.check_authenticated, user_landing.show_add_emergency_contacts);
-router.post('/employee/:employee_id/emergency_contacts/add', user_landing.check_authenticated, user_landing.add_emergency_contacts);
-router.get('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user_landing.show_edit_emergency_contacts);
-router.post('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user_landing.edit_emergency_contacts);
+router.get('/employee/:employee_id/emergency_contacts', user_landing.check_authenticated, user.allow_hr, user_landing.show_emergency_contacts);
+router.get('/employee/:employee_id/emergency_contacts/add', user_landing.check_authenticated, user.allow_hr, user_landing.show_add_emergency_contacts);
+router.post('/employee/:employee_id/emergency_contacts/add', user_landing.check_authenticated, user.allow_hr, user_landing.add_emergency_contacts);
+router.get('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_emergency_contacts);
+router.post('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user.allow_hr, user_landing.edit_emergency_contacts);
 
 // EMPLOYEE CUSTOM DETAILS
-router.get('/employee/:employee_id/custom-details', user_landing.check_authenticated, user_landing.show_edit_has_attr);
-router.post('/employee/:employee_id/custom-details/:id', user_landing.check_authenticated, user_landing.edit_has_attr);
+router.get('/employee/:employee_id/custom-details', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_has_attr);
+router.post('/employee/:employee_id/custom-details/:id', user_landing.check_authenticated, user.allow_hr, user_landing.edit_has_attr);
 
 // APPROVE LEAVES
 router.get('/approve_leaves', user_landing.check_authenticated, user_landing.show_approve_leaves);

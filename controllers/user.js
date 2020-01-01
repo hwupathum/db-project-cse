@@ -6,6 +6,14 @@ exports.check_authenticated = function (req, res, next) {
   }
 };
 
+exports.allow_hr = function (req, res, next) {
+  if (req.session.user.job_id == 1) {
+    next()
+  } else {
+    res.redirect('/');
+  }
+};
+
 exports.show_login = function (req, res, next) {
   //  response is a HTTP web page
   res.render('user/login', {formData: {}, errors: {}});
@@ -47,7 +55,7 @@ exports.signup = function(req, res, next) {
 exports.login = function(req, res, next) {
   var email= req.body.email;
   var pass = req.body.password;
-  var queryString = 'SELECT email, employee_id FROM user NATURAL JOIN employee WHERE email = ? AND password = md5(?)';
+  var queryString = 'SELECT email, employee_id, job_id FROM user NATURAL JOIN employee NATURAL JOIN works WHERE email = ? AND password = md5(?)';
   req.getConnection((error, conn) => {
     conn.query(queryString, [email, pass], (err, rows, fields) => {
       if (err) {
