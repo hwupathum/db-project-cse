@@ -19,6 +19,10 @@ router.post('/employee/add', admin_landing.check_authenticated, admin_landing.ad
 router.get('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.show_edit_employee);
 router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.edit_employee);
 
+// EMPLOYEE CUSTOM DETAILS
+router.get('/employee/:employee_id/custom-details', admin_landing.check_authenticated, admin_landing.show_edit_has_attr);
+router.post('/employee/:employee_id/custom-details/:id', admin_landing.check_authenticated, admin_landing.edit_has_attr);
+
 // EMPLOYEE WORK DETAILS
 router.get('/employee/:employee_id/work-details', admin_landing.check_authenticated, admin_landing.show_work_history);
 router.get('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.show_edit_work_history);
@@ -28,15 +32,15 @@ router.post('/employee/:employee_id/work-details/edit', admin_landing.check_auth
 router.get('/employee/:employee_id/dependants', admin_landing.check_authenticated, admin_landing.show_dependents);
 router.get('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.show_add_dependants);
 router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
-router.get('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
-router.post('/employee/:employee_id/dependants/edit', admin_landing.check_authenticated, admin_landing.edit_dependants);
+router.get('/employee/:employee_id/dependants/edit/:id', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
+router.post('/employee/:employee_id/dependants/edit/:id', admin_landing.check_authenticated, admin_landing.edit_dependants);
 
 // EMERGENCY CONTACTS
 router.get('/employee/:employee_id/emergency_contacts', admin_landing.check_authenticated, admin_landing.show_emergency_contacts);
 router.get('/employee/:employee_id/emergency_contacts/add', admin_landing.check_authenticated, admin_landing.show_add_emergency_contacts);
 router.post('/employee/:employee_id/emergency_contacts/add', admin_landing.check_authenticated, admin_landing.add_emergency_contacts);
-router.get('/employee/:employee_id/emergency_contacts/edit', admin_landing.check_authenticated, admin_landing.show_edit_emergency_contacts);
-router.post('/employee/:employee_id/emergency_contacts/edit', admin_landing.check_authenticated, admin_landing.edit_emergency_contacts);
+router.get('/employee/:employee_id/emergency_contacts/edit/:id', admin_landing.check_authenticated, admin_landing.show_edit_emergency_contacts);
+router.post('/employee/:employee_id/emergency_contacts/edit/:id', admin_landing.check_authenticated, admin_landing.edit_emergency_contacts);
 
 router.post('/employee/:employee_id/delete-json', admin_landing.check_authenticated, admin_landing.delete_employee_json);
 
@@ -91,4 +95,5 @@ router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.
 router.post('/custom_attr/add', admin_landing.check_authenticated, admin_landing.add_custom_attr);
 router.get('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.show_edit_custom_attr);
 router.post('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.edit_custom_attr);
+
 module.exports = router;

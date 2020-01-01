@@ -1,18 +1,18 @@
 doctype html
 html(lang='en')
-    include ../admin_common/head.pug
-    +head("Admin Portal")
+    include ../common/head.pug
+    +head("User Portal")
     body
         header
-            include ../admin_common/navbar.pug
-            +navbar(admin)
+            include ../common/navbar.pug
+            +navbar(user)
             br
         .row
             .col-sm-12.offset-md-2.col-md-8
                 if rows
                     h4.text-center Emergency Contacts
                     br
-                    a.btn.btn-outline-success(href="/admin/employee/" + employer.employee_id + "/emergency_contacts/add") Add Emergency Contacts
+                    a.btn.btn-outline-success(href="/employee/" + employer.employee_id + "/emergency_contacts/add") Add Emergency Contacts
                     table.table.table-hover.table-bordered
                         thead
                             tr
@@ -39,7 +39,7 @@ html(lang='en')
                                         td.span #{row.relation}
                                         |
                                         td.text-center
-                                            a.table-action(href="/admin/employee/" + employer.employee_id + "/emergency_contacts/edit/"+row.id) Edit
-    include ../admin_common/footer.pug
+                                            a.table-action(href="/employee/" + employer.employee_id + "/emergency_contacts/edit/"+row.id) Edit
+    include ../common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

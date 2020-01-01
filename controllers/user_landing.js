@@ -299,3 +299,198 @@ exports.edit_work_history = function (req, res, next) {
         });
     });
 };
+
+// dependants ...............................
+
+exports.show_user_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM dependants WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/employee_dependants', {
+                    employer: {employee_id},
+                    rows: rows.map(row => ({...row,birth_date: moment(row.birth_date).format("YYYY-MM-DD")})),
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_add_dependants = function (req, res, next) {
+    //  response is a HTTP web page
+    const employee_id = req.params.employee_id;
+    res.render('user/add_dependants', {formData: {},employer: {employee_id}, errors: {}, user: req.session.user});
+};
+
+exports.add_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const f_name = req.body.f_name;
+    const l_name = req.body.l_name;
+    const relation = req.body.relation;
+    const tel_no = req.body.tel_no;
+    const birth_date = req.body.birth_date;
+    const gender = req.body.gender;
+    const queryString = 'INSERT INTO dependants (id,employee_id,f_name,l_name,relation,tel_no,birth_date,gender) VALUES (null,?,?,?,?,?,?,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,f_name,l_name,relation,tel_no,birth_date,gender], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/employee/" + employee_id + "/dependants")
+            }
+        });
+    });
+};
+exports.show_edit_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const id = req.params.id;
+    const queryString = 'SELECT * FROM dependants WHERE employee_id = ? AND id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('user/edit_dependants', {formData: rows[0],employer: {employee_id},id : {id}, errors: {}, user: req.session.user})
+            }
+        });
+    });
+};
+
+exports.edit_dependants = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const id = req.params.id;
+    const f_name = req.body.f_name;
+    const l_name = req.body.l_name;
+    const relation = req.body.relation;
+    const tel_no = req.body.tel_no;
+    const birth_date = req.body.birth_date;
+    const gender = req.body.gender;
+    const queryString = 'UPDATE dependants SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, birth_date = ?, gender = ? WHERE employee_id = ? AND id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [f_name,l_name,relation,tel_no,birth_date,gender,employee_id,id], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/employee/" + employee_id + "/dependants")
+            }
+        });
+    });
+};
+
+// emergency contacts......................
+
+exports.show_emergency_contacts = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM emergency_contacts WHERE employee_id = ?', [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/emergency_contacts', {
+                    employer: {employee_id},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_add_emergency_contacts = function (req, res, next) {
+    //  response is a HTTP web page
+    const employee_id = req.params.employee_id;
+    res.render('user/add_emergency_contacts', {formData: {},employer: {employee_id}, errors: {}, user: req.session.user});
+};
+
+exports.add_emergency_contacts = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
+    const queryString = 'INSERT INTO emergency_contacts (id,employee_id,f_name,l_name,relation,tel_no,street,city,state,gender) VALUES (null,?,?,?,?,?,?,?,?,?)';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,f_name,l_name,relation,tel_no,street,city,state,gender], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/employee/" + employee_id + "/emergency_contacts")
+            }
+        });
+    });
+};
+
+exports.show_edit_emergency_contacts = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const id = req.params.id;
+    const queryString = 'SELECT * FROM emergency_contacts WHERE employee_id = ? AND id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id,id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                console.log(rows)
+                res.render('user/edit_emergency_contacts', {formData: rows[0],employer: {employee_id},id: {id}, errors: {}, user: req.session.user})
+            }
+        });
+    });
+};
+
+exports.edit_emergency_contacts = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const id = req.params.id;
+    const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
+    const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id,id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect("/employee/" + employee_id + "/emergency_contacts")
+            }
+        });
+    });
+};
+
+// other details .................
+
+exports.show_edit_has_attr = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const queryString = 'SELECT * FROM has_attributes NATURAL JOIN custom_attributes WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.render('user/edit_custom_attributes', {
+                    rows,
+                    employer: {employee_id},
+                    errors: {},
+                    user: req.session.user
+                })
+            }
+        });
+    });
+};
+
+exports.edit_has_attr = function (req, res, next) {
+    const {employee_id, id} = req.params;
+    const value = req.body.value;
+    const queryString = 'UPDATE has_attributes SET value = ? WHERE employee_id = ? AND attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [value, employee_id, id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/employee/' + employee_id + '/custom-details')
+            }
+        });
+    });
+};

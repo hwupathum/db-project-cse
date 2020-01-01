@@ -1,11 +1,11 @@
 doctype html
 html(lang='en')
-    include ../admin_common/head.pug
-    +head("Admin Portal")
+    include ../common/head.pug
+    +head("User Portal")
     body
         header
-            include ../admin_common/navbar.pug
-            +navbar(admin)
+            include ../common/navbar.pug
+            +navbar(user)
             .container
                 .row
                     .col-sm-12.offset-md-2.col-md-8
@@ -14,7 +14,7 @@ html(lang='en')
                             h2.text-center Edit Dependents
                             .row
                                 .col-sm-12.col-md-12
-                                    form(action="/admin/employee/" + employer.employee_id + "/dependants/edit/"+id.id method='POST')
+                                    form(action="/employee/" + employer.employee_id + "/dependants/edit/"+id.id method='POST')
                                         div.formgroup.row
                                             .col-sm-4.col-md-4
                                                 input(required='true',name='f_name', type='text', value=formData.f_name, placeholder='First Name *').form-control
@@ -36,5 +36,5 @@ html(lang='en')
                                                 if (errors && errors.message)
                                                     p.small.text-danger #{errors.message}
                                                 button.mt-3.btn.btn-success(type='submit') Save
-    include ../admin_common/footer.pug
+    include ../common/footer.pug
     +footer()
