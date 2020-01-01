@@ -1,0 +1,69 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Job Report")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        br
+        .row
+            .col-sm-12.offset-md-2.col-md-8
+                .row
+                    .col-md-3
+                        .form-group
+                            label(for="jobSelect1") Job
+                            select.form-control(id="jobSelect1")
+                                for job in jobs
+                                    if(job.job_id == job_id)
+                                        option(value = job.job_id selected) #{job.title}
+                                    else
+                                        option(value = job.job_id) #{job.title}
+                    .col-md-3
+                        .form-group
+                            label(for="paygradeSelect1") Pay Grade
+                            select.form-control(id="paygradeSelect1")
+                                for paygrade in paygrades
+                                    if(paygrade.paygrade_id == paygrade_id)
+                                        option(value = paygrade.paygrade_id selected) #{paygrade.grade}
+                                    else
+                                        option(value = paygrade.paygrade_id) #{paygrade.grade}
+                    .col-md-3
+                        .form-group
+                            label(for="departmentSelect1") Department
+                            select.form-control(id="departmentSelect1")
+                                for department in departments
+                                    if(department.department_id == department_id)
+                                        option(value = department.department_id selected) #{department.department}
+                                    else
+                                        option(value = department.department_id) #{department.department}
+                    .col-md-3
+                        .form-group
+                            label(for="emp_statusSelect1") Employee Status
+                            select.form-control(id="emp_statusSelect1")
+                                for emp_stat in emp_stats
+                                    if(emp_stat.emp_stat_id == emp_stat_id)
+                                        option(value = emp_stat.emp_stat_id selected) #{emp_stat.status}
+                                    else
+                                        option(value = emp_stat.emp_stat_id) #{emp_stat.status}
+                if rows
+                    h4.text-center Report
+                    br
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Name
+                                th NIC
+                                th Department
+                                th Status
+                        tbody
+                            for row in rows
+                                tr
+                                    p(id=row.id)
+                                        td.span #{row.f_name + " " + row.l_name}
+                                        td.span #{row.NIC}
+                                        td.span #{row.department}
+                                        td.span #{row.status}
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/users.js")
