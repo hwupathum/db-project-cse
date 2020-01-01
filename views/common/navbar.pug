@@ -25,15 +25,15 @@ mixin navbar(user)
               a.nav-link.dropdown-toggle(id='navbarDropdownMenuLink', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Reports
                   .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
                       a.dropdown-item(href='/reports/department/7') Employee by Department
-        ul.navbar-nav.float-right
-            if user
-                span.navbar-text #{user.email}
-                li.nav-item
-                    a.nav-link(href='/logout') Logout
-            else
-                li.nav-item
-                    a.nav-link(href='/signup') Sign Up
-                li.nav-item
-                    a.nav-link(href='/login') Login
-                li.nav-item
-                a.nav-link(href='/admin/login') Admin Login
+      ul.navbar-nav.float-right
+        if user
+            span.navbar-text #{user.email}
+            li.nav-item
+                a.nav-link(href='/logout') Logout
+        else
+            li.nav-item
+                a.nav-link(href='/signup') Sign Up
+            li.nav-item
+                a.nav-link(href='/login') Login
+            li.nav-item
+            a.nav-link(href='/admin/login') Admin Login
