@@ -1,0 +1,30 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Add Supervisor")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+
+            br
+            .row
+                .col-sm-12.offset-md-1.col-md-10
+                    if rows
+                        h4.text-center Add Supervisor
+                        table
+                            tbody
+                                form(action="/employee" + employer.employee_id + "/add_supervisor" method='POST')
+                                    div.form-group          
+                                        for supervisor in rows                              
+                                            tr
+                                                td
+                                                    div.custom-control.custom-radio
+                                                        input.custom-control-input(type="radio" id=supervisor.employee_id name="superviser_id")
+                                                        label.custom-control-label(for=supervisor.employee_id) 
+                                                    td #{supervisor.f_name + " " + supervisor.l_name}
+                                                    td #{supervisor.title}
+                                                    td #{supervisor.department}
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

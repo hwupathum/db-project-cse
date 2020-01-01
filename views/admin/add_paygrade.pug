@@ -6,21 +6,21 @@ html(lang='en')
         header
             include ../admin_common/navbar.pug
             +navbar(admin)
-            .container
-                .row
-                    .col-sm-12.offset-md-2.col-md-8
-                        br
-                        .jumbotron
-                            h2.text-center Add Pay Grade
-                            .row
-                                .col-sm-12.col-md-12
-                                    form(action='/admin/paygrades/add', method='POST')
-                                        div.formgroup
-                                            label.small.mb-1.mt-3 Grade:
-                                            input(required='true', name='grade', type='text', value='').form-control
+        .container
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    br
+                    .jumbotron
+                        h2.text-center Add Pay Grade
+                        .row
+                            .col-sm-12.col-md-12
+                                form(action='/admin/paygrades/add', method='POST')
+                                    div.formgroup
+                                        label.small.mb-1.mt-3 Grade:
+                                        input(required='true', name='grade', type='text', value='').form-control
 
-                                            if (errors && errors.message)
-                                                p.small.text-danger #{errors.message}
-                                            button.mt-3.btn.btn-success(type='submit') Add
+                                        if (errors && errors.message)
+                                            p.small.text-danger #{errors.message}
+                                        button.mt-3.btn.btn-success(type='submit') Add
     include ../admin_common/footer.pug
     +footer()

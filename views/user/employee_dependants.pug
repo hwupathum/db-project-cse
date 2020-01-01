@@ -1,11 +1,11 @@
 doctype html
 html(lang='en')
-    include ../admin_common/head.pug
-    +head("Admin Portal")
+    include ../common/head.pug
+    +head("User Portal")
     body
         header
-            include ../admin_common/navbar.pug
-            +navbar(admin)
+            include ../common/navbar.pug
+            +navbar(user)
         .container
             br
             .row
@@ -13,7 +13,7 @@ html(lang='en')
                     if rows
                         h4.text-center Dependents
                         br
-                        a.btn.btn-outline-success(href="/admin/employee/" + employer.employee_id + "/dependants/add") Add Dependants
+                        a.btn.btn-outline-success(href="/employee/" + employer.employee_id + "/dependants/add") Add Dependants
                         table.table.table-hover.table-bordered
                             thead
                                 tr
@@ -36,7 +36,7 @@ html(lang='en')
                                             td.span #{row.gender}
                                             |
                                             td.text-center
-                                                a.table-action(href="/admin/employee/" + employer.employee_id + "/dependants/edit/"+ row.id) Edit
-    include ../admin_common/footer.pug
+                                                a.table-action(href="/employee/" + employer.employee_id + "/dependants/edit/" + row.id) Edit
+    include ../common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

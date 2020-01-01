@@ -14,7 +14,7 @@ html(lang='en')
                             h2.text-center Edit Dependents
                             .row
                                 .col-sm-12.col-md-12
-                                    form(action="/admin/employee/" + employer.employee_id + "/dependants/edit" method='POST')
+                                    form(action="/admin/employee/" + employer.employee_id + "/dependants/edit/"+id.id method='POST')
                                         div.formgroup.row
                                             .col-sm-4.col-md-4
                                                 input(required='true',name='f_name', type='text', value=formData.f_name, placeholder='First Name *').form-control

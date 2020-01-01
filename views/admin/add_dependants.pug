@@ -17,14 +17,18 @@ html(lang='en')
                                     form(action="/admin/employee/" + employer.employee_id + "/dependants/add" method='POST')
                                         div.formgroup.row
                                             .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 First Name *
                                                 input(required='true',name='f_name', type='text', value=formData.f_name, placeholder='First Name *').form-control
                                             .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Last Name *
                                                 input(required='true',name='l_name', type='text', value=formData.l_name, placeholder='Last Name *').form-control
                                             .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 Relation *
                                                 input(required='true',name='relation', type='text', value=formData.relation, placeholder='Relation *').form-control
                                             .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Telephone *
                                                 input(required='true', name='tel_no', type='text', value=formData.tel_no, placeholder='Telephone *').form-control
-                                            .col-sm-4.col-md-4
+                                            .col-sm-4.col-md-6
                                                 label.small.mb-1.mt-3 Date of Birth *
                                                 input(required='true', name='birth_date', type='date', value=formData.birth_date).form-control
                                             .col-sm-4.col-md-4
