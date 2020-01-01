@@ -27,6 +27,7 @@ mixin navbar(user)
                   .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
                       a.dropdown-item(href='/reports/department/1') Employee by Department
                       a.dropdown-item(href='/reports/job/1') Employee by Job
+                      a.dropdown-item(href='/reports/leaves') Leaves
       ul.navbar-nav.float-right
         if user
             span.navbar-text #{user.email}

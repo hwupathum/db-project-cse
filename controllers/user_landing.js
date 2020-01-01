@@ -682,6 +682,38 @@ exports.show_report_job = function (req, res, next) {
     });
 };
 
+exports.show_report_leaves = function (req, res, next) {
+    const userId = req.session.userId;
+    const {job_id} = req.params;
+    const queryString = 'SELECT * FROM employee NATURAL JOIN works NATURAL JOIN job NATURAL JOIN emp_status NATURAL JOIN department WHERE job_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [job_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows);
+                const deptQuery = 'SELECT * FROM job';
+                req.getConnection((error, conn) => {
+                    conn.query(deptQuery, [], (err, jobs, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            res.render('user/job_report', {
+                                employee: {userId},
+                                rows,
+                                jobs,
+                                job_id,
+                                user: req.session.user
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
+
+// employee .......................
 exports.show_add_employee = function (req, res, next) {
     const message = req.query.error ? "Email already exists" : null;
     req.getConnection((error, conn) => {
