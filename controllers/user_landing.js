@@ -712,30 +712,35 @@ exports.show_report_group = function (req, res, next) {
 };
 
 exports.show_report_leaves = function (req, res, next) {
-    const userId = req.session.userId;
-    const {job_id} = req.params;
-    const queryString = 'SELECT * FROM employee NATURAL JOIN works NATURAL JOIN job NATURAL JOIN emp_status NATURAL JOIN department WHERE job_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [job_id], (err, rows, fields) => {
+        conn.query('SELECT * FROM department', [], (err, rows, fields) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log(rows);
-                const deptQuery = 'SELECT * FROM job';
-                req.getConnection((error, conn) => {
-                    conn.query(deptQuery, [], (err, jobs, fields) => {
-                        if (err) {
-                            res.json(err);
-                        } else {
-                            res.render('user/job_report', {
-                                employee: {userId},
-                                rows,
-                                jobs,
-                                job_id,
-                                user: req.session.user
-                            });
-                        }
-                    });
+                console.log(rows)
+                res.render('user/leave_range', {
+                    formData : {},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_leaves_report = function (req, res, next) {
+    const {department_id, from_date, to_date} = req.body;
+    const queryString = 'SELECT COUNT(id) as count FROM employee NATURAL JOIN department NATURAL JOIN leaves WHERE department_id = ? AND ? < from_date AND to_date < ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department_id,from_date,to_date], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/leave_report', {
+                    formData : {},
+                    rows,
+                    user: req.session.user
                 });
             }
         });

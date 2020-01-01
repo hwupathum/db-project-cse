@@ -68,6 +68,7 @@ router.post('/employee/:id/apply', user_landing.check_authenticated, user_landin
 router.get('/reports/department/:department_id', user_landing.check_authenticated, user_landing.show_report_dept);
 router.get('/reports/group', user_landing.check_authenticated, user_landing.show_report_group);
 router.get('/reports/leaves', user_landing.check_authenticated, user_landing.show_report_leaves);
+router.post('/employee/view_report', user_landing.check_authenticated, user_landing.show_leaves_report);
 // router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.show_add_custom_attr);
 
 module.exports = router;
