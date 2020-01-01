@@ -120,3 +120,23 @@ exports.show_employees = function(req, res, next) {
         });
     });
 };
+
+exports.show_add_supervisor = function(req, res, next) {
+    const employeeId = req.params.employee_id;
+    const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name, email FROM employee) AS t1 ' +
+        'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works WHERE end_date IS NULL) AS t2 NATURAL JOIN department NATURAL JOIN job';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/add_supervisor', {
+                    employer: {employeeId},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
