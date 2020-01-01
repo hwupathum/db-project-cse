@@ -27,13 +27,13 @@ exports.show_home = function (req, res, next) {
                         } else {
                             res.render('user/user_data', {
                                 employee: {userId},
-                                rows,   
-                                custom_attrs,        
+                                rows,
+                                custom_attrs,
                                 user: req.session.user
                             });
                         }
                     });
-                });   
+                });
             }
         });
     });
@@ -612,6 +612,39 @@ exports.apply_leave = function (req, res, next) {
                 } else {
                     res.redirect("/apply_leave?error=1")
                 }
+            }
+        });
+    });
+};
+
+// reports ...............
+
+exports.show_report_dept = function (req, res, next) {
+    const userId = req.session.userId;
+    const {department_id} = req.params;
+    const queryString = 'SELECT * FROM employee NATURAL JOIN works NATURAL JOIN job NATURAL JOIN emp_status WHERE department_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows);
+                const deptQuery = 'SELECT * FROM department';
+                req.getConnection((error, conn) => {
+                    conn.query(deptQuery, [], (err, departments, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            res.render('user/department_report', {
+                                employee: {userId},
+                                rows,
+                                departments,
+                                department_id,
+                                user: req.session.user
+                            });
+                        }
+                    });
+                });
             }
         });
     });
