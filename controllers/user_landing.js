@@ -19,10 +19,21 @@ exports.show_home = function (req, res, next) {
                 res.json(err);
             } else {
                 //res.json(rows);
-                res.render('user/user_data', {
-                    employee: {userId},
-                    rows,           
-                    user: req.session.user});
+                const query = "SELECT * FROM has_attributes LEFT OUTER JOIN custom_attributes USING(attr_id) WHERE employee_id=?";
+                req.getConnection((error, conn) => {
+                    conn.query(query, [userId], (err, custom_attrs, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            res.render('user/user_data', {
+                                employee: {userId},
+                                rows,   
+                                custom_attrs,        
+                                user: req.session.user
+                            });
+                        }
+                    });
+                });   
             }
         });
     });

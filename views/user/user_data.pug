@@ -78,5 +78,18 @@ html(lang='en')
                                     tr
                                         td.profile-col.h6 Pay Grade :  
                                         td.p.card-text #{rows[0].grade} 
+            .row
+                .col-3
+                .col-6                    
+                    div.card.bg-light.mb-3
+                        h5.card-header Custom
+                        card-body.card-padding
+                            table
+                                tbody 
+                                    for attr in custom_attrs
+                                        tr
+                                            td.profile-col.h6 #{attr.attribute + " :"}
+                                            td.p.card-text #{attr.value}
+                .col-3
     include ../common/footer.pug
     +footer()
