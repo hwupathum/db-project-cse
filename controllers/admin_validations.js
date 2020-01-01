@@ -132,3 +132,53 @@ exports.edit_emergency_validation = function (req, res, next) {
         }
     })
 };
+
+exports.add_departments_validation = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const schema = Joi.object().keys({
+        f_name: Joi.string().alphanum().required(),
+        l_name: Joi.string().allow("", null),
+        relation: Joi.string().required(),
+        tel_no: Joi.string().regex(/^\d{9}$/).required(),
+        birth_date: Joi.string().required(),
+        gender: Joi.string().required()
+    })
+    Joi.validate(req.body, schema, (err, result) => {
+        console.log(req.params);
+        if (err) {
+            res.render('admin/add_dependants', {
+                formData: {...req.body, birth_date: moment(req.body.birth_date).format("YYYY-MM-DD")},
+                employer: {employee_id}, 
+                errors: err.details[0], 
+                admin: req.session.admin
+            });
+        } else {
+            next()
+        }
+    })
+};
+
+exports.edit_departments_validation = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const schema = Joi.object().keys({
+        f_name: Joi.string().alphanum().required(),
+        l_name: Joi.string().allow("", null),
+        relation: Joi.string().required(),
+        tel_no: Joi.string().regex(/^\d{9}$/).required(),
+        birth_date: Joi.string().required(),
+        gender: Joi.string().required()
+    })
+    Joi.validate(req.body, schema, (err, result) => {
+        console.log(req.params);
+        if (err) {
+            res.render('admin/edit_dependants', {
+                formData: {...req.body, birth_date: moment(req.body.birth_date).format("YYYY-MM-DD")},
+                employer: {employee_id}, 
+                errors: err.details[0], 
+                admin: req.session.admin
+            });
+        } else {
+            next()
+        }
+    })
+};

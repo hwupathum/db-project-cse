@@ -31,9 +31,9 @@ router.post('/employee/:employee_id/work-details/edit', admin_landing.check_auth
 // EMPLOYEE DEPENDANTS
 router.get('/employee/:employee_id/dependants', admin_landing.check_authenticated, admin_landing.show_dependents);
 router.get('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.show_add_dependants);
-router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_landing.add_dependants);
+router.post('/employee/:employee_id/dependants/add', admin_landing.check_authenticated, admin_validations.add_departments_validation, admin_landing.add_dependants);
 router.get('/employee/:employee_id/dependants/edit/:id', admin_landing.check_authenticated, admin_landing.show_edit_dependants);
-router.post('/employee/:employee_id/dependants/edit/:id', admin_landing.check_authenticated, admin_landing.edit_dependants);
+router.post('/employee/:employee_id/dependants/edit/:id', admin_landing.check_authenticated, admin_validations.edit_departments_validation, admin_landing.edit_dependants);
 
 // EMERGENCY CONTACTS
 router.get('/employee/:employee_id/emergency_contacts', admin_landing.check_authenticated, admin_landing.show_emergency_contacts);
@@ -55,7 +55,7 @@ router.get('/departments', admin_landing.check_authenticated, admin_landing.show
 router.get('/departments/add', admin_landing.check_authenticated, admin_landing.show_add_departments);
 router.post('/departments/add', admin_landing.check_authenticated, admin_landing.add_departments);
 router.get('/departments/edit/:department_id', admin_landing.check_authenticated, admin_landing.show_edit_departments);
-router.post('/departments/edit/:department_id',admin_landing.check_authenticated,admin_landing.edit_departments);
+router.post('/departments/edit/:department_id', admin_landing.check_authenticated, admin_landing.edit_departments);
 
 // JOBS
 router.get('/jobs',admin_landing.check_authenticated,admin_landing.show_jobs);
