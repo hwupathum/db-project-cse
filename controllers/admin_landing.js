@@ -745,7 +745,7 @@ exports.show_dependents = function (req, res, next) {
                 console.log(rows)
                     res.render('admin/employee_dependents', {
                     employer: {employee_id},
-                    rows,
+                    rows: rows.map(row => ({...row,birth_date: moment(row.birth_date).format("YYYY-MM-DD")})),
                     admin: req.session.admin
                 });
             }
@@ -782,15 +782,16 @@ exports.add_dependants = function (req, res, next) {
 
 exports.show_edit_dependants = function (req, res, next) {
     const employee_id = req.params.employee_id;
-    const queryString = 'SELECT * FROM dependants WHERE employee_id = ?';
+    const id = req.params.id;
+    const queryString = 'SELECT * FROM dependants WHERE employee_id = ? AND id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [employee_id], (err, rows, fields) => {
+        conn.query(queryString, [employee_id,id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_dependants', {formData: rows[0],employer: {employee_id}, errors: {}, admin: req.session.admin})
+                res.render('admin/edit_dependants', {formData: rows[0],employer: {employee_id},id : {id}, errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -798,15 +799,16 @@ exports.show_edit_dependants = function (req, res, next) {
 
 exports.edit_dependants = function (req, res, next) {
     const employee_id = req.params.employee_id;
+    const id = req.params.id;
     const f_name = req.body.f_name;
     const l_name = req.body.l_name;
     const relation = req.body.relation;
     const tel_no = req.body.tel_no;
     const birth_date = req.body.birth_date;
     const gender = req.body.gender;
-    const queryString = 'UPDATE dependants SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, birth_date = ?, gender = ? WHERE employee_id = ?';
+    const queryString = 'UPDATE dependants SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, birth_date = ?, gender = ? WHERE employee_id = ? AND id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [f_name,l_name,relation,tel_no,birth_date,gender,employee_id], (err, rows, fields) => {
+        conn.query(queryString, [f_name,l_name,relation,tel_no,birth_date,gender,employee_id,id], (err, rows, fields) => {
             let message;
             if (err) {
                 res.json(err)
@@ -861,14 +863,15 @@ exports.add_emergency_contacts = function (req, res, next) {
 
 exports.show_edit_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
-    const queryString = 'SELECT * FROM emergency_contacts WHERE employee_id = ?';
+    const id = req.params.id;
+    const queryString = 'SELECT * FROM emergency_contacts WHERE employee_id = ? AND id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [employee_id], (err, rows, fields) => {
+        conn.query(queryString, [employee_id,id], (err, rows, fields) => {
             if (err) {
                 res.json(err)
             } else {
                 console.log(rows)
-                res.render('admin/edit_emergency_contacts', {formData: rows[0],employer: {employee_id}, errors: {}, admin: req.session.admin})
+                res.render('admin/edit_emergency_contacts', {formData: rows[0],employer: {employee_id},id: {id}, errors: {}, admin: req.session.admin})
             }
         });
     });
@@ -876,10 +879,11 @@ exports.show_edit_emergency_contacts = function (req, res, next) {
 
 exports.edit_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
+    const id = req.params.id;
     const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
     const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ?';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id], (err, rows, fields) => {
+        conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id,id], (err, rows, fields) => {
             if (err) {
                 res.json(err)
             } else {
