@@ -46,4 +46,8 @@ router.post('/employee/:employee_id/emergency_contacts/add', user_landing.check_
 router.get('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user_landing.show_edit_emergency_contacts);
 router.post('/employee/:employee_id/emergency_contacts/edit/:id', user_landing.check_authenticated, user_landing.edit_emergency_contacts);
 
+// EMPLOYEE CUSTOM DETAILS
+router.get('/employee/:employee_id/custom-details', user_landing.check_authenticated, user_landing.show_edit_has_attr);
+router.post('/employee/:employee_id/custom-details/:id', user_landing.check_authenticated, user_landing.edit_has_attr);
+
 module.exports = router;

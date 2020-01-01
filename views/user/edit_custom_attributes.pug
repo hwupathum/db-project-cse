@@ -1,0 +1,34 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("User Portal")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        .container
+            br
+            .row
+                .col-sm-12.offset-md-2.col-md-8
+                    if rows
+                        h4.text-center Custom Attributes
+                        br
+                        table.table.table-hover.table-bordered
+                            thead
+                                tr
+                                    th Attribute
+                                    th Value
+                            tbody
+                                for attribute in rows
+                                    tr(id = attribute.attr_id)
+                                        td.span #{attribute.attribute}
+                                        td.text-center.span
+                                            form(action='/employee/' + employer.employee_id + '/custom-details/' + attribute.attr_id, method='POST')
+                                                .row
+                                                    .col-sm-8.col-md-8
+                                                        input(name='value', type='text', value=attribute.value, min=0, max=100, class='maxLeaveCountTextBox').form-control
+                                                    .col-sm-4.col-md-2
+                                                        button.btn.btn-success(type='submit') Save
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/admins.js")

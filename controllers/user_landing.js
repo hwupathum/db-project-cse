@@ -434,3 +434,39 @@ exports.edit_emergency_contacts = function (req, res, next) {
         });
     });
 };
+
+// other details .................
+
+exports.show_edit_has_attr = function (req, res, next) {
+    const employee_id = req.params.employee_id;
+    const queryString = 'SELECT * FROM has_attributes NATURAL JOIN custom_attributes WHERE employee_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [employee_id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.render('user/edit_custom_attributes', {
+                    rows,
+                    employer: {employee_id},
+                    errors: {},
+                    user: req.session.user
+                })
+            }
+        });
+    });
+};
+
+exports.edit_has_attr = function (req, res, next) {
+    const {employee_id, id} = req.params;
+    const value = req.body.value;
+    const queryString = 'UPDATE has_attributes SET value = ? WHERE employee_id = ? AND attr_id = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [value, employee_id, id], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/employee/' + employee_id + '/custom-details')
+            }
+        });
+    });
+};

@@ -95,4 +95,5 @@ router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.
 router.post('/custom_attr/add', admin_landing.check_authenticated, admin_landing.add_custom_attr);
 router.get('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.show_edit_custom_attr);
 router.post('/custom_attr/edit/:attr_id', admin_landing.check_authenticated, admin_landing.edit_custom_attr);
+
 module.exports = router;

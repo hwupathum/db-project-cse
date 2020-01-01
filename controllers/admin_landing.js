@@ -576,7 +576,7 @@ exports.edit_empstatus = function (req, res, next) {
 // max_leaves ......................................................
 
 exports.show_max_leaves = function (req, res, next) {
-    const queryString = 'SELECT * from max_leaves NATURAL JOIN leave_type NATURAL JOIN paygrade';
+    const queryString = 'SELECT * from max_leaves NATURAL JOIN leave_type NATURAL JOIN paygrade ORDER BY paygrade_id';
     req.getConnection((error, conn) => {
         conn.query(queryString, [], (err, rows, fields) => {
             if (err) {
