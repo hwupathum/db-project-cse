@@ -55,7 +55,7 @@ exports.show_dependents = function(req, res, next) {
                 res.json(err);
             } else {
                 console.log(rows)
-                    res.render('user/dependents', {
+                res.render('user/dependents', {
                     employer: {userId},
                     rows,
                     user: req.session.user
@@ -73,7 +73,7 @@ exports.show_contacts = function(req, res, next) {
                 res.json(err);
             } else {
                 console.log(rows)
-                    res.render('user/emergency_concacts', {
+                res.render('user/emergency_concacts', {
                     employer: {userId},
                     rows,
                     user: req.session.user
@@ -91,9 +91,29 @@ exports.show_leaves = function(req, res, next) {
                 res.json(err);
             } else {
                 console.log(rows)
-                    res.render('user/leaves', {
+                res.render('user/leaves', {
                     employer: {userId},
                     rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_employees = function(req, res, next) {    
+    const userId = req.session.userId;
+    const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name, email FROM employee) AS t1 ' +
+        'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works WHERE end_date IS NULL) AS t2 NATURAL JOIN department NATURAL JOIN job';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/employee', {
+                    employee: {userId},
+                    rows, 
                     user: req.session.user
                 });
             }
