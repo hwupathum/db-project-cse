@@ -1,0 +1,40 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("User Portal")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h2.text-center Apply For Leaves
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action="/employee/"+employee.userId+"/apply", method='POST')
+                                        div.formgroup.row
+                                            .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Leave Type :
+                                                select(required='true', name='leave_type_id', value=formData.leave_type_id).form-control
+                                                    each type in rows
+                                                        option(value=type.leave_type_id) #{type.type}
+                                                .col-sm-6.col-md-6
+                                                label.small.mb-1.mt-3 Reason :
+                                                input(required='true', name='reason', type='text', value='').form-control
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 From Date :
+                                                input(required='true', name='from_date', type='date', value=formData.from_date).form-control
+                                            .col-sm-4.col-md-4
+                                                label.small.mb-1.mt-3 To Date :
+                                                input(required='true', name='to_date', type='date', value=formData.from_date).form-control
+                                            .col-sm-12.col-md-12
+                                                if (errors && errors.message)
+                                                    p.small.text-danger #{errors.message}
+                                                button.mt-3.btn.btn-success(type='submit') Apply
+                                                if (errors)
+                                                    p.small.text-danger Leave limit exceeded
+    include ../common/footer.pug
+    +footer()

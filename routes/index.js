@@ -56,6 +56,10 @@ router.get('/approve_leaves', user_landing.check_authenticated, user_landing.sho
 router.get('/employee/:id/approve', user_landing.check_authenticated, user_landing.approve_leave);
 router.get('/employee/:id/reject', user_landing.check_authenticated, user_landing.reject_leave);
 
+// APPLY LEAVE
+router.get('/apply_leave', user_landing.check_authenticated, user_landing.show_apply_leaves);
+router.post('/employee/:id/apply', user_landing.check_authenticated, user_landing.apply_leave);
+
 // REPORTS
 router.get('/reports/department/:department_id', user_landing.check_authenticated, user_landing.show_report_dept);
 // router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.show_add_custom_attr);
