@@ -56,4 +56,8 @@ router.get('/approve_leaves', user_landing.check_authenticated, user_landing.sho
 router.get('/employee/:id/approve', user_landing.check_authenticated, user_landing.approve_leave);
 router.get('/employee/:id/reject', user_landing.check_authenticated, user_landing.reject_leave);
 
+// REPORTS
+router.get('/reports/department/:department_id', user_landing.check_authenticated, user_landing.show_report_dept);
+// router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.show_add_custom_attr);
+
 module.exports = router;
