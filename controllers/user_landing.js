@@ -110,7 +110,6 @@ exports.show_employees = function(req, res, next) {
             if (err) {
                 res.json(err);
             } else {
-                console.log(rows)
                 res.render('user/employee', {
                     employee: {userId},
                     rows, 
@@ -123,19 +122,44 @@ exports.show_employees = function(req, res, next) {
 
 exports.show_add_supervisor = function(req, res, next) {
     const employeeId = req.params.employee_id;
-    const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name, email FROM employee) AS t1 ' +
+    const queryString = 'SELECT * FROM (SELECT employee_id, f_name, l_name FROM employee WHERE employee_id <> ?) AS t1 ' +
         'NATURAL JOIN (SELECT id, department_id, job_id, employee_id FROM works WHERE end_date IS NULL) AS t2 NATURAL JOIN department NATURAL JOIN job';
     req.getConnection((error, conn) => {
-        conn.query(queryString, [], (err, rows, fields) => {
+        conn.query(queryString, [employeeId], (err, rows, fields) => {
             if (err) {
                 res.json(err);
             } else {
-                console.log(rows)
-                res.render('user/add_supervisor', {
-                    employer: {employeeId},
-                    rows,
-                    user: req.session.user
-                });
+                console.log(employeeId)
+                const query = 'SELECT superviser_id FROM supervises WHERE employee_id=?';
+                req.getConnection((error, conn) => {
+                    conn.query(query, [employeeId], (err, id, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            console.log(id)
+                            res.render('user/add_supervisor', {
+                                employer: {employeeId},
+                                rows,
+                                id : id[0],
+                                user: req.session.user
+                            })
+                        }
+                    })
+                })
+            }
+        });
+    });
+};
+
+exports.add_edit_supervisor = function(req, res, next) {
+    const supervisor = req.body.supervisor_id;
+    req.getConnection((error, conn) => {
+        conn.query('CALL add_supervisor(?,?)', [req.params.employee_id,supervisor], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/employee')
             }
         });
     });

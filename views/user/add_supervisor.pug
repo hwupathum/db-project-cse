@@ -6,25 +6,25 @@ html(lang='en')
         header
             include ../common/navbar.pug
             +navbar(user)
-
-            br
-            .row
-                .col-sm-12.offset-md-1.col-md-10
-                    if rows
-                        h4.text-center Add Supervisor
-                        table
-                            tbody
-                                form(action="/employee" + employer.employee_id + "/add_supervisor" method='POST')
-                                    div.form-group          
-                                        for supervisor in rows                              
-                                            tr
-                                                td
-                                                    div.custom-control.custom-radio
-                                                        input.custom-control-input(type="radio" id=supervisor.employee_id name="superviser_id")
-                                                        label.custom-control-label(for=supervisor.employee_id) 
-                                                    td #{supervisor.f_name + " " + supervisor.l_name}
-                                                    td #{supervisor.title}
-                                                    td #{supervisor.department}
+            .container
+                .row
+                    .col-sm-12.offset-md-2.col-md-8
+                        br
+                        .jumbotron
+                            h4.text-center Add Supervisor
+                            br
+                            .row
+                                .col-sm-12.col-md-12
+                                    form(action="/employee/" + employer.employeeId + "/add_supervisor" method='POST')                                                
+                                        div.form-group       
+                                            for supervisor in rows  
+                                                div.custom-control.custom-radio
+                                                    if id && supervisor.employee_id == id.superviser_id
+                                                        input.custom-control-input(type="radio" id=supervisor.employee_id name="supervisor_id" value=supervisor.employee_id checked)
+                                                    else
+                                                        input.custom-control-input(type="radio" id=supervisor.employee_id name="supervisor_id" value=supervisor.employee_id)     
+                                                    label.custom-control-label(for=supervisor.employee_id) #{supervisor.f_name + " " + supervisor.l_name + " ( " + supervisor.title + " , " + supervisor.department + " )"}
+                                        button.mt-3.btn.btn-primary(type='submit') Save
     include ../common/footer.pug
     +footer()
     script(src="/javascripts/admins.js")

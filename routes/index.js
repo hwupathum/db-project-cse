@@ -19,6 +19,7 @@ router.get('/leaves', user_landing.check_authenticated, user_landing.show_leaves
 
 router.get('/employee', user_landing.check_authenticated, user_landing.show_employees);
 router.get('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user_landing.show_add_supervisor);
+router.post('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user_landing.add_edit_supervisor);
 
 // PERSONAL DETAILS
 router.get('/employee/:employee_id/details', user_landing.check_authenticated, user_landing.show_edit_details);
