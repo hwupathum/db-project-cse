@@ -19,6 +19,10 @@ router.post('/employee/add', admin_landing.check_authenticated, admin_landing.ad
 router.get('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.show_edit_employee);
 router.post('/employee/:employee_id/details', admin_landing.check_authenticated, admin_landing.edit_employee);
 
+// EMPLOYEE CUSTOM DETAILS
+router.get('/employee/:employee_id/custom-details', admin_landing.check_authenticated, admin_landing.show_edit_has_attr);
+router.post('/employee/:employee_id/custom-details/:id', admin_landing.check_authenticated, admin_landing.edit_has_attr);
+
 // EMPLOYEE WORK DETAILS
 router.get('/employee/:employee_id/work-details', admin_landing.check_authenticated, admin_landing.show_work_history);
 router.get('/employee/:employee_id/work-details/edit', admin_landing.check_authenticated, admin_landing.show_edit_work_history);
