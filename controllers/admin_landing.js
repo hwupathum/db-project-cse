@@ -929,5 +929,30 @@ exports.edit_has_attr = function (req, res, next) {
     });
 };
 
-// reports ............
+exports.show_edit_organization = function (req, res, next) {
+    const attrId = req.params.attr_id;
+    const queryString = 'SELECT * FROM organization';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.render('admin/edit_organization', {formData: rows[0], errors: {}, admin: req.session.admin})
+            }
+        });
+    });
+};
 
+exports.edit_organization = function (req, res, next) {
+    const {name, reg_no} = req.body;
+    const queryString = 'UPDATE organization SET name = ?, reg_no = ? WHERE 1';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [name, reg_no], (err, rows, fields) => {
+            if (err) {
+                res.json(err)
+            } else {
+                res.redirect('/admin/organization')
+            }
+        });
+    });
+};

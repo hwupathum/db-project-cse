@@ -9,6 +9,10 @@ router.get('/login', admin.check_authenticated, admin.show_login);
 router.post('/login', admin.check_authenticated, admin.login);
 router.get('/logout', admin.logout);
 
+// Org
+router.get('/organization', admin_landing.check_authenticated, admin_landing.show_edit_organization);
+router.post('/organization', admin_landing.check_authenticated, admin_landing.edit_organization);
+
 // EMPLOYEES
 router.get('/', admin_landing.check_authenticated, admin_landing.show_employee);
 router.get('/employee', admin_landing.check_authenticated, admin_landing.show_employee);
