@@ -1,4 +1,5 @@
 const moment = require('moment');
+const uuidv1 = require('uuid/v1');
 // check auth ...................................................................
 exports.check_authenticated = function (req, res, next) {
     if (req.session.user) {
@@ -468,7 +469,7 @@ exports.edit_emergency_contacts = function (req, res, next) {
     const employee_id = req.params.employee_id;
     const id = req.params.id;
     const {f_name, l_name, relation, tel_no, gender, street, city, state} = req.body;
-    const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ?';
+    const queryString = 'UPDATE emergency_contacts SET f_name = ?, l_name = ?, relation = ?, tel_no = ?, street = ?, city = ?, state = ?, gender = ? WHERE employee_id = ? AND id = ?';
     req.getConnection((error, conn) => {
         conn.query(queryString, [f_name,l_name,relation,tel_no,street,city,state,gender,employee_id,id], (err, rows, fields) => {
             if (err) {
@@ -705,6 +706,124 @@ exports.show_report_group = function (req, res, next) {
                         }
                     });
                 });
+            }
+        });
+    });
+};
+
+exports.show_report_leaves = function (req, res, next) {
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM department', [], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/leave_range', {
+                    formData : {},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+exports.show_leaves_report = function (req, res, next) {
+    const {department_id, from_date, to_date} = req.body;
+    const queryString = 'SELECT COUNT(id) as count FROM employee NATURAL JOIN department NATURAL JOIN leaves WHERE department_id = ? AND ? < from_date AND to_date < ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [department_id,from_date,to_date], (err, rows, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                console.log(rows)
+                res.render('user/leave_report', {
+                    formData : {},
+                    rows,
+                    user: req.session.user
+                });
+            }
+        });
+    });
+};
+
+// employee .......................
+exports.show_add_employee = function (req, res, next) {
+    const message = req.query.error ? "Email already exists" : null;
+    req.getConnection((error, conn) => {
+        conn.query('SELECT * FROM department', [], (err, departments, fields) => {
+            if (err) {
+                res.json(err);
+            } else {
+                req.getConnection((error, conn) => {
+                    conn.query('SELECT * FROM job', [], (err, jobs, fields) => {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                            req.getConnection((error, conn) => {
+                                conn.query('SELECT * FROM emp_status', [], (err, emp_status, fields) => {
+                                    if (err) {
+                                        res.json(err);
+                                    } else {
+                                        req.getConnection((error, conn) => {
+                                            conn.query('SELECT * FROM paygrade', [], (err, paygrades, fields) => {
+                                                if (err) {
+                                                    res.json(err);
+                                                } else {
+                                                    res.render('user/add_employee', {
+                                                        formData: {starting_date: moment().format("YYYY-MM-DD")},
+                                                        errors: {message},
+                                                        departments,
+                                                        jobs,
+                                                        emp_status,
+                                                        paygrades,
+                                                        user: req.session.user
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+    });
+};
+
+exports.add_employee = function (req, res, next) {
+    const employee_id = uuidv1();
+    const {
+        NIC, f_name, l_name, email, birth_date, marital_stat, gender, street, city, state, tel_no_mobile,
+        tel_no_home, paygrade_id, emp_stat_id, job_id, department_id, starting_date
+    } = req.body;
+    const params = [employee_id, NIC, f_name, l_name, email, street, city, state, birth_date, tel_no_mobile,
+        tel_no_home, marital_stat, gender, 1, department_id, job_id, paygrade_id, emp_stat_id, starting_date];
+    const queryString = 'SELECT email FROM employee WHERE email = ?';
+    req.getConnection((error, conn) => {
+        conn.query(queryString, [email], (err, rows, fields) => {
+            let message;
+            if (err) {
+                res.json(err)
+            } else {
+                if (rows.length) {
+                    // Email already exists
+                    res.redirect('/employee/add?error=1')
+                } else {
+                    // call procedure to add employee
+                    const procedure = 'CALL add_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    req.getConnection((error, conn) => {
+                        conn.query(procedure, params, (err, rows, fields) => {
+                            if (err) {
+                                res.json(err);
+                            } else {
+                                res.redirect('/');
+                            }
+                        });
+                    });
+                }
             }
         });
     });

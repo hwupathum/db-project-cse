@@ -3,6 +3,7 @@ var router = express.Router();
 
 let user = require('../controllers/user');
 let user_landing = require('../controllers/user_landing');
+let admin_validations = require('../controllers/admin_validations');
 
 router.get('/login', user.check_authenticated, user.show_login);
 router.get('/signup', user.check_authenticated, user.show_signup);
@@ -17,9 +18,12 @@ router.get('/dependents', user_landing.check_authenticated, user_landing.show_de
 router.get('/contacts', user_landing.check_authenticated, user_landing.show_contacts);
 router.get('/leaves', user_landing.check_authenticated, user_landing.show_leaves);
 
-router.get('/employee', user_landing.check_authenticated, user.allow_hr, user_landing.show_employees);
-router.get('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user.allow_hr, user_landing.show_add_supervisor);
-router.post('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user.allow_hr, user_landing.add_edit_supervisor);
+router.get('/employee', user_landing.check_authenticated, user_landing.show_employees);
+router.get('/employee/add', user_landing.check_authenticated, user_landing.show_add_employee);
+router.post('/employee/add', user_landing.check_authenticated,  user_landing.add_employee);
+
+router.get('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user_landing.show_add_supervisor);
+router.post('/employee/:employee_id/add_supervisor', user_landing.check_authenticated, user_landing.add_edit_supervisor);
 
 // PERSONAL DETAILS
 router.get('/employee/:employee_id/details', user_landing.check_authenticated, user.allow_hr, user_landing.show_edit_details);
@@ -63,6 +67,8 @@ router.post('/employee/:id/apply', user_landing.check_authenticated, user_landin
 // REPORTS
 router.get('/reports/department/:department_id', user_landing.check_authenticated, user_landing.show_report_dept);
 router.get('/reports/group', user_landing.check_authenticated, user_landing.show_report_group);
+router.get('/reports/leaves', user_landing.check_authenticated, user_landing.show_report_leaves);
+router.post('/employee/view_report', user_landing.check_authenticated, user_landing.show_leaves_report);
 // router.get('/custom_attr/add', admin_landing.check_authenticated, admin_landing.show_add_custom_attr);
 
 module.exports = router;

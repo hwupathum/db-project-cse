@@ -28,7 +28,7 @@ mixin navbar(user)
                     .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
                         a.dropdown-item(href='/reports/department/1') Employee by Department
                         a.dropdown-item(href='/reports/group?job=1&department=1&emp_status=1&paygrade=1') Employee by Groups
-            else
+                        a.dropdown-item(href='/reports/leaves') Leaves
 
       ul.navbar-nav.float-right
         if user

@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+    include ../common/head.pug
+    +head("Leave Report")
+    body
+        header
+            include ../common/navbar.pug
+            +navbar(user)
+        br
+        .row
+            .col-sm-12.offset-md-2.col-md-8
+                if rows
+                    h4.text-center Report - Leave Count
+                    br
+                    table.table.table-hover.table-bordered
+                        thead.table-primary
+                            tr
+                                th Count
+                        tbody
+                            for row in rows
+                                tr
+                                    p(id=row.id)
+                                        td.span #{row.count}
+    include ../common/footer.pug
+    +footer()
+    script(src="/javascripts/users.js")
